@@ -3,7 +3,8 @@ import HomeView from "../views/HomeView.vue";
 import login from "../views/loginView.vue";
 import register from "../views/registerView.vue";
 import allMonthes from "../views/allMonthes.vue";
-import month from "../views/singleMonth.vue"
+import month from "../views/singleMonth.vue";
+import topStudents from "../views/topStudents.vue"
 
 const routes = [
   {
@@ -26,6 +27,10 @@ const routes = [
   {
     path: "/month/:id",
     component: month,
+  },
+  {
+    path: "/topStudents",
+    component: topStudents,
   },
 ];
 

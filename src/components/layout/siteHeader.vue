@@ -26,14 +26,14 @@
             </li>
 
             <li class="nav-item">
-              <router-link class="nav-link fw-bold" to="/termsCondition">
-                الشروط والاحكام
+              <router-link class="nav-link fw-bold" to="/topStudents">
+                الاوائل
               </router-link>
             </li>
 
             <li class="nav-item">
-              <router-link class="nav-link fw-bold" to="/whoUs">
-                من نحن
+              <router-link class="nav-link fw-bold" to="/termsCondition">
+                الشروط والاحكام
               </router-link>
             </li>
           </ul>

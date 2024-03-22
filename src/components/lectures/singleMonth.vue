@@ -127,43 +127,269 @@
         </div>
       </section>
 
-      <!-- single lecture  -->
-      <div class="single-lecture flex_between mb-3">
-        <div class="d-flex align-items-center">
-          <!-- lect image  -->
-          <div class="lect-image">
-            <img :src="require('@/assets/imgs/education.jpeg')" alt="" />
-          </div>
+      <h4 class="fw-bold text-center mb-3">
+        محتوى
+        <span class="mainColor"> الشهر </span>
+      </h4>
 
-          <div class="mx-4">
-            <h6 class="fw-bold">Lecture Name</h6>
-            <p>Professor name here</p>
-          </div>
-        </div>
+      <div class="card">
+        <Accordion :activeIndex="0">
+          <AccordionTab header="عنوان الحصة1">
+            <div class="card">
+              <Accordion :activeIndex="0">
+                <AccordionTab>
+                  <template #header>
+                    <span class="flex align-items-center gap-2 w-full">
+                      <span> شيت </span>
+                    </span>
+                  </template>
 
-        <!-- actions  -->
-        <div>
-          <router-link to="/">انضم الان</router-link>
-        </div>
+                  <div class="quiz-container">
+                    <quiz />
+                  </div>
+                </AccordionTab>
+                <AccordionTab header="فيديو">
+                  <div class="video-conatiner w-100">
+                    <video controls height="300" class="w-100">
+                      <source
+                        :src="require('@/assets/imgs/video.mp4')"
+                        type="video/mp4"
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </AccordionTab>
+                <!-- quiz  -->
+                <AccordionTab header="كويز">
+                  <div class="quiz-container">
+                    <quiz />
+                  </div>
+                </AccordionTab>
+                <AccordionTab header="فيديو">
+                  <div class="video-conatiner w-100">
+                    <video controls height="300" class="w-100">
+                      <source
+                        :src="require('@/assets/imgs/video.mp4')"
+                        type="video/mp4"
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </AccordionTab>
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> الواجب </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+                  <p class="m-0">
+                    At vero eos et accusamus et iusto odio dignissimos ducimus
+                    qui blanditiis praesentium voluptatum deleniti atque
+                    corrupti quos dolores et quas molestias excepturi sint
+                    occaecati cupiditate non provident, similique sunt in culpa
+                    qui officia deserunt mollitia animi, id est laborum et
+                    dolorum fuga. Et harum quidem rerum facilis est et expedita
+                    distinctio. Nam libero tempore, cum soluta nobis est
+                    eligendi optio cumque nihil impedit quo minus.
+                  </p>
+                </AccordionTab>
+                <AccordionTab header="امتحان على اخر باب">
+                  <div class="quiz-container">
+                    <quiz />
+                  </div>
+                </AccordionTab>
+              </Accordion>
+            </div>
+          </AccordionTab>
+        </Accordion>
+
+        <Accordion :disabled="true">
+          <AccordionTab header="عنوان الحصة 2">
+            <div class="card">
+              <Accordion>
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> شيت </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+
+                  <div class="quiz-container">
+                    <quiz />
+                  </div>
+                </AccordionTab>
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> فيديو </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+                  <div class="video-conatiner w-100">
+                    <video controls height="300" class="w-100">
+                      <source
+                        :src="require('@/assets/imgs/video.mp4')"
+                        type="video/mp4"
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </AccordionTab>
+                <!-- quiz  -->
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> كويز </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+                  <div class="quiz-container">
+                    <quiz />
+                  </div>
+                </AccordionTab>
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> فيديو </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+                  <div class="video-conatiner w-100">
+                    <video controls height="300" class="w-100">
+                      <source
+                        :src="require('@/assets/imgs/video.mp4')"
+                        type="video/mp4"
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </AccordionTab>
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> الواجب </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+                  <p class="m-0">
+                    At vero eos et accusamus et iusto odio dignissimos ducimus
+                    qui blanditiis praesentium voluptatum deleniti atque
+                    corrupti quos dolores et quas molestias excepturi sint
+                    occaecati cupiditate non provident, similique sunt in culpa
+                    qui officia deserunt mollitia animi, id est laborum et
+                    dolorum fuga. Et harum quidem rerum facilis est et expedita
+                    distinctio. Nam libero tempore, cum soluta nobis est
+                    eligendi optio cumque nihil impedit quo minus.
+                  </p>
+                </AccordionTab>
+                <AccordionTab :disabled="true">
+                  <template #header>
+                    <div class="d-flex flex-row-reverse">
+                      <span class="mx-3"> امتحان على اخر الباب </span>
+                      <span>
+                        <i class="fa-solid fa-lock"></i>
+                      </span>
+                    </div>
+                  </template>
+                  <div class="quiz-container">
+                    <quiz />
+                  </div>
+                </AccordionTab>
+              </Accordion>
+            </div>
+          </AccordionTab>
+        </Accordion>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
+import quiz from "@/components/quiz/quizComponent.vue";
 export default {
   name: "CoursesSingleMonth",
 
   data() {
-    return {};
+    return {
+      // start quiz
+      quiz: {
+        title: "simple quiz",
+        questions: [
+          {
+            text: "What is 2 + 2?",
+            options: ["3", "4", "5", "6"],
+            answer: "4",
+          },
+          {
+            text: "What is the capital of France?",
+            options: ["London", "Berlin", "Paris", "Madrid"],
+            answer: "Paris",
+          },
+          {
+            text: "Which planet is known as the Red Planet?",
+            options: ["Mars", "Venus", "Jupiter", "Mercury"],
+            answer: "Mars",
+          },
+        ],
+      },
+      selectedOptions: [],
+      quizCompleted: false,
+      // end quiz
+
+      // start video
+      // end vide
+    };
+  },
+  computed: {
+    score() {
+      let correct = 0;
+      for (let i = 0; i < this.quiz.questions.length; i++) {
+        if (this.selectedOptions[i] === this.quiz.questions[i].answer) {
+          correct++;
+        }
+      }
+      return correct;
+    },
   },
 
   mounted() {},
 
-  methods: {},
+  methods: {
+    submitQuiz() {
+      this.quizCompleted = true;
+    },
+  },
+  components: {
+    Accordion,
+    AccordionTab,
+    quiz,
+  },
 };
 </script>
 
+<style>
+.p-accordion-header-link {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+</style>
 <style lang="scss" scoped>
 .month-course {
   height: 80vh;
@@ -240,5 +466,21 @@ export default {
       object-fit: cover;
     }
   }
+}
+
+.quiz-container {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.question {
+  margin-bottom: 20px;
+}
+
+.options {
+  margin-top: 10px;
 }
 </style>
