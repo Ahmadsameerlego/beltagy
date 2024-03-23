@@ -26,11 +26,6 @@
               <h6>عنا</h6>
               <ul>
                 <li>
-                  <router-link to="/whoUs">
-                    <div class="my-l">من نحن</div>
-                  </router-link>
-                </li>
-                <li>
                   <router-link to="/termsCondition">
                     <div class="my-l">الشروط والاحكام</div>
                   </router-link>
@@ -38,11 +33,6 @@
                 <li>
                   <router-link to="/contact">
                     <div class="my-l">تواصل معنا</div>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/privacy">
-                    <div class="my-l">سياسية الخصوصية</div>
                   </router-link>
                 </li>
               </ul>

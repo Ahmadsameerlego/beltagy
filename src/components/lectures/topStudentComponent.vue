@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-5 mb-4">
-    <h4 class="mainColor text-center fw-bold mb-5">الاوائل</h4>
+    <h4 class="mainColor text-center fw-bold">الاوائل</h4>
+    <p class="text-center mb-5 fw-bold">دائما ما نفتخر بالطلاب المتفوقين</p>
 
     <swiper
       :slides-per-view="4"
