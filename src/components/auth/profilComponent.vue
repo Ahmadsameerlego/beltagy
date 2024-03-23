@@ -199,8 +199,8 @@
 <script>
 import InputText from "primevue/inputtext";
 // import InputNumber from 'primevue/inputnumber';
-import Dropdown from "primevue/dropdown";
-import Password from "primevue/password";
+// import Dropdown from "primevue/dropdown";
+// import Password from "primevue/password";
 
 // import Toast from 'primevue/toast';
 
@@ -337,8 +337,8 @@ export default {
   components: {
     InputText,
     // InputNumber,
-    Dropdown,
-    Password,
+    // Dropdown,
+    // Password,
     // Toast,
     // sendOtp
   },

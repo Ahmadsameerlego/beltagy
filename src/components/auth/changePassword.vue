@@ -123,9 +123,9 @@
 </template>
 
 <script>
-import InputText from "primevue/inputtext";
+// import InputText from "primevue/inputtext";
 // import InputNumber from 'primevue/inputnumber';
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import Password from "primevue/password";
 
 // import Toast from 'primevue/toast';
@@ -261,9 +261,9 @@ export default {
 
   //   },
   components: {
-    InputText,
+    // InputText,
     // InputNumber,
-    Dropdown,
+    // Dropdown,
     Password,
     // Toast,
     // sendOtp
