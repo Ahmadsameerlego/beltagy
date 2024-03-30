@@ -67,7 +67,7 @@ export default {
 .single_about {
   position: relative;
   transition: 0.3s all;
-  border: 1px solid #293255;
+  border: 1px solid #15364d;
   border-radius: 10px;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -83,10 +83,10 @@ export default {
     right: 50%;
     background: linear-gradient(
       252.28deg,
-      #293255 3.57%,
+      #15364d 3.57%,
       #475487 23.7%,
       #546099 68.8%,
-      #293255 95.33%
+      #15364d 95.33%
     );
 
     transition: 0.3s;

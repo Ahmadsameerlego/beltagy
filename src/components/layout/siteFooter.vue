@@ -44,7 +44,7 @@
               <ul>
                 <li>
                   <router-link to="/allMonthes">
-                    <div class="my-l">ابحث عن محاضرة</div>
+                    <div class="my-l">دروس اونلاين</div>
                   </router-link>
                 </li>
                 <li>

@@ -4,11 +4,11 @@
 
 <script>
 export default {
-  mounted() {
-    document.addEventListener("contextmenu", (event) => {
-      event.preventDefault();
-    });
-  },
+  // mounted() {
+  //   document.addEventListener("contextmenu", (event) => {
+  //     event.preventDefault();
+  //   });
+  // },
 };
 </script>
 <style lang="scss">

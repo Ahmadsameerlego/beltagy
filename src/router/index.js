@@ -9,7 +9,8 @@ import profile from "../views/profileView.vue";
 import changePassword from "../views/changePassword.vue";
 import orders from "../views/ordersView.vue";
 import termsCondition from "../views/termsConditions.vue";
-import contact from "../views/contactUs.vue"
+import contact from "../views/contactUs.vue";
+import quiz from "../views/quizView.vue"
 const routes = [
   {
     path: "/",
@@ -55,6 +56,10 @@ const routes = [
   {
     path: "/contact",
     component: contact,
+  },
+  {
+    path: "/quiz/:id",
+    component: quiz,
   },
 ];
 

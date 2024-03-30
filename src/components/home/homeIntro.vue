@@ -1,5 +1,5 @@
 <template>
-  <section id="homeIntro" class="mt-5">
+  <section id="homeIntro">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-7 mb-3">
@@ -12,9 +12,13 @@
             </div>
 
             <div class="intro_btns mt-4 d-flex align-items-center">
-              <router-link to="/allMonthes" class="main_btn d-flex">
+              <router-link
+                to="/allMonthes"
+                class="main_btn d-flex"
+                style="border: 1px solid #fff"
+              >
                 <img :src="require('@/assets/imgs/search.png')" alt="" />
-                <span> ابحث عن محاضرة </span>
+                <span> دروس اونلاين </span>
               </router-link>
 
               <!-- <router-link
@@ -29,11 +33,18 @@
         </div>
         <div class="col-md-5 mb-3">
           <div class="job_image">
-            <img
-              class="w-100 h-100 lazy"
-              :src="require('@/assets/imgs/cover1-removebg-preview.png')"
-              alt="job canvas"
-            />
+            <div>
+              <img
+                :src="require('@/assets/imgs/download.png')"
+                alt=""
+                style="
+                  width: 459px;
+                  height: 365px;
+                  object-fit: cover;
+                  transform: translateY(-18px);
+                "
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -82,6 +93,8 @@ export default {
 
 <style lang="scss">
 #homeIntro {
+  background-color: #15364d;
+  color: #fff;
   p {
     font-size: 15px;
   }
@@ -147,11 +160,11 @@ export default {
   //     z-index: -1;
   // }
   // &:hover{
-  //     color:#293255;
+  //     color:#15364D;
   //     z-index:1 ;
   //     &::before{
   //         height: 100%;
-  //         border: 1px solid #293255;
+  //         border: 1px solid #15364D;
   //     }
   // }
 }

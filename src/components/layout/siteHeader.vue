@@ -1,5 +1,5 @@
 <template>
-  <header id="header" class="pt-2 pb-2">
+  <header id="header" class="pt-1 pb-1">
     <div class="container">
       <!-- full header  -->
       <div class="d-flex justify-content-between align-items-center">
@@ -21,15 +21,15 @@
 
             <li class="nav-item">
               <router-link class="nav-link fw-bold" to="/allMonthes"
-                >ابحث عن محاضرة</router-link
+                >دروس اونلاين</router-link
               >
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link class="nav-link fw-bold" to="/topStudents">
                 الاوائل
               </router-link>
-            </li>
+            </li> -->
 
             <li class="nav-item">
               <router-link class="nav-link fw-bold" to="/termsCondition">
@@ -103,7 +103,7 @@
                 height="30"
                 alt=""
               />
-              <span class="name">اهلا Ahmed</span>
+              <span class="name">ازيك يا Ahmed</span>
 
               <i class="fa-regular fa-user user_profile"></i>
             </button>
@@ -320,25 +320,21 @@
 }
 .dropdown {
   &.profile {
-    background-color: #293255 !important;
+    background-color: #15364d !important;
     button.dropdown-toggle {
-      background-color: #293255 !important;
+      background-color: #15364d !important;
       color: #fff;
     }
   }
 }
 #header {
-  position: sticky;
   box-shadow: 0px 0px 10px #3333336b;
   width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 9;
   background-color: #fff;
   .logo {
-    width: 135px;
-    height: 120px;
-    img {
+    width: 99px;
+    height: 90px;
+    img { 
       width: 100%;
       height: 100%;
       object-fit: contain;
