@@ -9,15 +9,17 @@ body{
     font-family: 'Cairo', sans-serif !important;
     font-size: 13px !important;
     overflow-x:hidden;
-    background-color: #fff;
-    color: #1D1D1D;
+    background-color: #15364d;
+    color: #fff;
 }
-
+.singel-lecture h6 , .singel-lecture p{
+    color: #15364D !important;
+}
 #app{
     font-family: 'Cairo', sans-serif !important;
 }
 .mainColor{
-    color: #15364D;
+    color: #fff !important;
 }
 // color variables
 
@@ -51,6 +53,7 @@ $main-color2: #6D98DB   ;
     padding: 7px 19px;
     transition: .3s;
     border: none;
+    border: 1px solid #fff;
 }
 .flex_center{
     display: flex;
@@ -72,7 +75,7 @@ $main-color2: #6D98DB   ;
 .site_title{
     color: $main-color1;
 }
-.mainColor{color: $main-color1 !important;}
+// .mainColor{color: $main-color1 !important;}
 .mainColor2{color: $main-color2;}
 .whiteColor { color:#fff }
 .grayColor{ color: #86888A; }
@@ -228,4 +231,7 @@ $main-color2: #6D98DB   ;
     50% {
         top: -50px;
     }
+}
+.dropdown-toggle{
+    border: 1px solid #fff !important;
 }

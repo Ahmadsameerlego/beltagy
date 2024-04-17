@@ -2,46 +2,18 @@
   <section id="homeIntro">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-7 mb-3">
-          <div class="row">
-            <div class="col-md-6" v-for="item in top" :key="item">
-              <h6 class="fw-bold mb-3">{{ item.title }}</h6>
-              <p class="fw-6">
-                {{ item.content }}
-              </p>
-            </div>
-
-            <div class="intro_btns mt-4 d-flex align-items-center">
-              <router-link
-                to="/allMonthes"
-                class="main_btn d-flex"
-                style="border: 1px solid #fff"
-              >
-                <img :src="require('@/assets/imgs/search.png')" alt="" />
-                <span> دروس اونلاين </span>
-              </router-link>
-
-              <!-- <router-link
-                v-if="!isAuth"
-                to="/exploreJobs"
-                class="bordered_btn"
-              >
-                {{ $t("home.explore") }}
-              </router-link> -->
-            </div>
-          </div>
-        </div>
-        <div class="col-md-5 mb-3">
+        
+        <div class="col-md-12 mb-3">
           <div class="job_image">
             <div>
               <img
-                :src="require('@/assets/imgs/download.png')"
+                :src="require('@/assets/imgs/intro.jpeg')"
                 alt=""
                 style="
-                  width: 459px;
+                  width:100%;
                   height: 365px;
                   object-fit: cover;
-                  transform: translateY(-18px);
+                  clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); 
                 "
               />
             </div>

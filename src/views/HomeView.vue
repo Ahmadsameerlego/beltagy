@@ -1,31 +1,31 @@
 <template>
   <!-- header  -->
   <siteHeaderVue />
-  <homeIntroVue data-aos="fade-up" data-aos-duration="2000" />
+  <homeIntroVue  />
 
-  <topStudentComponent data-aos="fade-up" data-aos-duration="2000" />
+  <topStudentComponent  />
 
-  <bestCoursesVue data-aos="fade-right" data-aos-duration="2000" />
-  <aboutOwnerVue data-aos="fade-left" data-aos-duration="2000" />
+  <bestCoursesVue />
+  <!-- <aboutOwnerVue /> -->
   <!-- about  -->
-  <homeAboutVue data-aos="fade-right" data-aos-duration="2000" />
+  <!-- <homeAboutVue /> -->
   <!-- vision -->
-  <homeVisionVue data-aos="fade-left" data-aos-duration="2000" />
+  <!-- <homeVisionVue /> -->
 
   <!-- download app   -->
-  <downloadAppVue data-aos="fade-right" data-aos-duration="2000" />
+  <downloadAppVue />
   <!-- partners  -->
   <!-- <homePartenersVue /> -->
 
   <!-- footer  -->
-  <siteFooterVue data-aos="fade-left" data-aos-duration="2000" />
+  <siteFooterVue />
 </template>
 
 <script>
 import siteHeaderVue from "@/components/layout/siteHeader.vue";
 import homeIntroVue from "@/components/home/homeIntro.vue";
-import homeAboutVue from "@/components/home/homeAbout.vue";
-import homeVisionVue from "@/components/home/homeVision.vue";
+// import homeAboutVue from "@/components/home/homeAbout.vue";
+// import homeVisionVue from "@/components/home/homeVision.vue";
 import downloadAppVue from "@/components/home/downloadApp.vue";
 // import homePartenersVue from "@/components/home/homeParteners.vue";
 import siteFooterVue from "@/components/layout/siteFooter.vue";
@@ -33,20 +33,20 @@ import topStudentComponent from "@/components/lectures/topStudentComponent.vue";
 
 import AOS from "aos";
 import bestCoursesVue from "@/components/home/bestCourses.vue";
-import aboutOwnerVue from "@/components/home/aboutOwner.vue";
+// import aboutOwnerVue from "@/components/home/aboutOwner.vue";
 
 export default {
   name: "HomeView",
   components: {
     siteHeaderVue,
     homeIntroVue,
-    homeAboutVue,
-    homeVisionVue,
+    // homeAboutVue,
+    // homeVisionVue,
     downloadAppVue,
     // homePartenersVue,
     siteFooterVue,
     bestCoursesVue,
-    aboutOwnerVue,
+    // aboutOwnerVue,
     topStudentComponent,
   },
   mounted() {

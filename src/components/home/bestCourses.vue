@@ -134,7 +134,7 @@
       </section>
 
       <div class="flex_center mt-4">
-        <router-link class="main_btn px-5 pt-2 pb-2" to="/allMonthes">
+        <router-link class="border-btn px-5 pt-2 pb-2" style="background-color:#fff" to="/allMonthes">
           عرض كل الشهور
         </router-link>
       </div>

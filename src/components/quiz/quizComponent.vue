@@ -310,8 +310,16 @@ export default {
 
 .options {
   margin-top: 10px;
-}
+    flex-direction: column !important;
+  align-items: start !important;
 
+}
+.option_container{
+  justify-content: space-around !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    margin-bottom: 15px;
+}
 .navigation button {
   margin: 0 5px;
   margin-top: 20px;

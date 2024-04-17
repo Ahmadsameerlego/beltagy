@@ -1,5 +1,5 @@
 <template>
-  <div class="footer mt-5">
+  <div class="footer">
     <div class="main-footer">
       <div class="container">
         <div class="row">
@@ -8,9 +8,8 @@
               <div class="flex-group-me foot-lo mb-4">
                 <router-link to="/">
                   <img
-                    :src="require('@/assets/imgs/logo.jpeg')"
+                    :src="require('@/assets/imgs/logo (2).png')"
                     alt=""
-                    style="mix-blend-mode: darken"
                   />
                 </router-link>
               </div>
@@ -140,7 +139,7 @@ a {
 }
 .main-footer {
   padding-top: 50px;
-  background-color: #ebebeb;
+  background-color: #15364d;
   color: var(--color-white);
 }
 .footer-colomn-me > img {
@@ -184,7 +183,7 @@ a {
   width: 40px;
 }
 .down-footer {
-  background-color: #ebebeb;
+  background-color: #15364d;
   color: var(--color-white);
   padding: 10px 0;
 }

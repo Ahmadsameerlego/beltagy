@@ -6,7 +6,7 @@
         <!-- logo  -->
         <div class="logo">
           <router-link to="/">
-            <img :src="require('@/assets/imgs/logo.jpeg')" alt="site logo" />
+            <img :src="require('@/assets/imgs/logo (2).png')" alt="site logo" />
           </router-link>
         </div>
 
@@ -330,7 +330,7 @@
 #header {
   box-shadow: 0px 0px 10px #3333336b;
   width: 100%;
-  background-color: #fff;
+  background-color: #15364d;
   .logo {
     width: 99px;
     height: 90px;
@@ -387,12 +387,12 @@
   }
   .navbar {
     a {
-      color: #1d1d1d;
+      color: #fff;
       font-size: 16px;
       font-weight: 600;
       margin: 0 12px;
       &.router-link-active {
-        color: #253974;
+        color: #a79483;
       }
     }
   }
