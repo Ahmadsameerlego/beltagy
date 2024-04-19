@@ -12,7 +12,7 @@
       <section class="loginSection" style="width: 93%; margin: auto">
         <h3 class="fw-bold mb-3">سجل الان</h3>
         <p class="loginParagraph fw-bold">
-          قم بملئ البيانات التاليه لتسجيل الدخول
+           يلا اعمل تسجيل دخول
         </p>
         <div class="row" style="width: 93%; margin: auto">
           <!-- right side  -->
@@ -41,14 +41,14 @@
                 </div>
 
                 <!-- select phone  -->
-                <Dropdown
+                <!-- <Dropdown
                   v-model="selectedCity"
                   :options="countries"
                   optionLabel="key"
                   @change="chooseCountry"
                   class="w-full md:w-14rem"
                   style="top: 32px !important"
-                />
+                /> -->
               </div>
 
               <!-- start phone validations  -->
@@ -59,7 +59,7 @@
               <!-- end phone validations  -->
 
               <!-- password  -->
-              <div class="position-relative flex-auto mt-3">
+              <!-- <div class="position-relative flex-auto mt-3">
                 <label for="integeronly" class="label fw-bold block mb-2">
                   الرقم السري
                 </label>
@@ -71,11 +71,10 @@
                   placeholder="قم بادخال الرقم السري"
                 />
 
-                <!-- icon  -->
                 <div class="inputIcon">
                   <img :src="require('@/assets/imgs/lock.svg')" alt="" />
                 </div>
-              </div>
+              </div> -->
 
               <!-- phone error  -->
               <!-- <div class="error" v-if="passwordRequied">
@@ -83,7 +82,7 @@
               </div> -->
 
               <!-- forget password  -->
-              <div class="d-flex justify-content-end mt-2">
+              <!-- <div class="d-flex justify-content-end mt-2">
                 <button
                   class="btn forgetPass"
                   type="button"
@@ -91,11 +90,11 @@
                 >
                   هل نسيت الرقم السري
                 </button>
-              </div>
+              </div> -->
 
               <!-- submit  -->
               <div class="mt-4">
-                <button class="main_btn w-100 pt-3 pb-3 fs-5">
+                <button class="main_btn w-100 pt-3 pb-3 fs-5" @click="openOtp=true">
                   دخول
                   <!-- <span v-if="!spinner">  </span>
                   <div class="spinner-border mx-2" role="status" v-if="spinner">
@@ -126,7 +125,7 @@
             <div class="">
               <img
                 class="loginImage w-100 h-100 lazy"
-                :src="require('@/assets/imgs/login.png')"
+                :src="require('@/assets/imgs/login-removebg-preview.png')"
                 alt=""
               />
             </div>
@@ -143,17 +142,19 @@
       <contactProblem :openContactModal="openContactModal" /> -->
     </div>
   </section>
+  <sendOtp :openOtp="openOtp" />
   <!-- <Toast /> -->
 </template>
 
 <script>
-import Password from "primevue/password";
+// import Password from "primevue/password";
 
 // // import components
 // import forgetPass from './forgetPass.vue';
 // import contactProblem from './contactProblem.vue';
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 // import Toast from 'primevue/toast';
+import sendOtp from './senOtp.vue';
 
 // import { mapActions, mapState } from 'vuex';
 export default {
@@ -161,6 +162,7 @@ export default {
     return {
       //   phone : '',
       password: "",
+      openOtp : false
 
       //   disabled : true,
       //   spinner : false ,
@@ -187,11 +189,12 @@ export default {
   //   },
 
   components: {
-    Password,
+    // Password,
     // forgetPass,
     // contactProblem,
-    Dropdown,
-    // Toast
+    // Dropdown,
+    // Toast,
+    sendOtp
   },
   //   methods:{
   //     ...mapActions('common',['getCountries']),
@@ -369,7 +372,7 @@ export default {
 }
 .newAcc {
   p {
-    color: #4f4f4f !important;
+    color: #fff !important;
   }
 }
 .forgetPass {

@@ -60,13 +60,7 @@
                   </div>
 
                   <!-- select phone  -->
-                  <Dropdown
-                    v-model="selectedCity"
-                    @change="chooseCountry"
-                    :options="countries"
-                    optionLabel="name"
-                    class="w-full md:w-14rem"
-                  />
+                  
                 </div>
                 <div>
                   <span v-if="phoneValid" class="text-danger">
@@ -115,26 +109,19 @@
                   </div>
 
                   <!-- select phone  -->
-                  <Dropdown
-                    v-model="selectedCity"
-                    @change="chooseCountry"
-                    :options="countries"
-                    optionLabel="name"
-                    class="w-full md:w-14rem"
-                  />
+                  
                 </div>
-                <div>
-                  <span v-if="phoneValid" class="text-danger">
-                    يجب ان يكون رقم الهاتف بين ٩ او ١٠ ارقام
-                  </span>
-                </div>
+
               </div>
+
+                <Message severity="warn"> يرجى العلم انه سيتم الاتصال بولي الامر للتاكد من البيانات </Message>
+
 
               <div class="col-md-6 mb-2">
                 <!-- phone  -->
                 <div class="position-relative flex-auto defaultInput">
                   <label for="integeronly" class="label fw-bold block mb-2"
-                    >السنة الدراسية
+                    >المحافظة
                   </label>
                   <!-- select phone  -->
                   <Dropdown
@@ -147,84 +134,42 @@
               </div>
 
               <div class="col-md-6 mb-2">
-                <!-- user name  -->
-                <div class="position-relative flex-auto">
-                  <label for="integeronly" class="label fw-bold block mb-2">
-                    اسم المدرسة
+                <!-- phone  -->
+                <div class="position-relative flex-auto defaultInput">
+                  <label for="integeronly" class="label fw-bold block mb-2"
+                    >تاريخ الميلاد
                   </label>
-                  <InputText
-                    type="text"
-                    class="defaultInput2"
-                    v-model="username"
-                    name="name"
-                    placeholder="الرجاء ادخال اسم المدرسة"
-                  />
-                  <!-- icon  -->
-                  <div class="inputIcon">
-                    <img :src="require('@/assets/imgs/user.svg')" alt="" />
-                  </div>
+                  <!-- select phone  -->
+                 <Calendar v-model="date" />
+
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
-                <!-- password  -->
-                <div class="position-relative flex-auto mt-3">
-                  <label for="integeronly" class="label fw-bold block mb-2">
-                    الرقم السري
+                <!-- phone  -->
+                <div class="position-relative flex-auto defaultInput">
+                  <label for="integeronly" class="label fw-bold block mb-2"
+                    >يرجى تحديد النوع
                   </label>
-                  <Password
-                    v-model="password"
-                    toggleMask
-                    class="defaultInput"
-                    placeholder="الرجاء ادخال الرقم السري"
-                    name="password"
-                  />
+                  <!-- select phone  -->
+                 <div class="flex flex-wrap gap-3 d-flex justify-content-between">
+                    <div class="flex align-items-center">
+                        <RadioButton v-model="ingredient" inputId="ingredient1" name="pizza" value="Cheese" />
+                        <label for="ingredient1" class="mx-2">ذكر</label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <RadioButton v-model="ingredient" inputId="ingredient2" name="pizza" value="Mushroom" />
+                        <label for="ingredient2" class="mx-2">انثي</label>
+                    </div>
 
-                  <!-- icon  -->
-                  <div class="inputIcon">
-                    <img :src="require('@/assets/imgs/lock.svg')" alt="" />
-                  </div>
+                </div>
+
                 </div>
               </div>
 
-              <div class="col-md-6 mb-2">
-                <!-- confirm password  -->
-                <div class="position-relative flex-auto mt-3">
-                  <label for="integeronly" class="label fw-bold block mb-2">
-                    تاكيد الرقم السري
-                  </label>
-                  <Password
-                    v-model="confirm_password"
-                    :feedback="false"
-                    toggleMask
-                    class="defaultInput"
-                    name="password_confirmation"
-                    placeholder="الرجاء تاكيد الرقم السري"
-                  />
+             
 
-                  <!-- icon  -->
-                  <div class="inputIcon">
-                    <img :src="require('@/assets/imgs/lock.svg')" alt="" />
-                  </div>
-                </div>
-
-                <div v-if="showValid">
-                  <p
-                    v-if="passwordMatch"
-                    class="passwordConfirmed d-flex align-items-center text-success"
-                  >
-                    <i class="fa-regular fa-circle-check"></i>
-                    <span>الرقم متطابق</span>
-                  </p>
-                  <p
-                    v-else
-                    class="passwordWrong d-flex align-items-center text-danger"
-                  >
-                    <i class="fa-regular fa-circle-xmark"></i>
-                    <span>غير متطابق</span>
-                  </p>
-                </div>
-              </div>
+             
             </div>
 
             <!-- terms & conditions  -->
@@ -242,7 +187,7 @@
               </span>
             </div>
 
-            <div class="mt-3">
+            <div class="mt-5">
               <button class="main_btn w-50 mx-auto flex_center pt-3 pb-3 fs-5">
                 <span v-if="!spinner">انشاء الحساب</span>
                 <div class="spinner-border mx-2" role="status" v-if="spinner">
@@ -274,7 +219,10 @@
 import InputText from "primevue/inputtext";
 // import InputNumber from 'primevue/inputnumber';
 import Dropdown from "primevue/dropdown";
-import Password from "primevue/password";
+// import Password from "primevue/password";
+import Message from 'primevue/message';
+import Calendar from 'primevue/calendar';
+import RadioButton from 'primevue/radiobutton';
 
 // import Toast from 'primevue/toast';
 
@@ -292,6 +240,7 @@ export default {
       },
 
       countries: [],
+      ingredient : "",
       password: "",
       confirm_password: "",
       disabled: true,
@@ -300,18 +249,19 @@ export default {
       conditions: false,
       openOtp: false,
       is_conditions: null,
+      date : null,
       years: [
         {
           id: 1,
-          name: "الاول الثانوي",
+          name: "الغربية",
         },
         {
           id: 2,
-          name: "الثاني الثانوي",
+          name: "الدقهلية",
         },
         {
           id: 3,
-          name: "الثالث الثانوي",
+          name: "القاهرة",
         },
       ],
     };
@@ -412,7 +362,10 @@ export default {
     InputText,
     // InputNumber,
     Dropdown,
-    Password,
+    Message,
+    Calendar,
+    RadioButton
+    // Password,
     // Toast,
     // sendOtp
   },

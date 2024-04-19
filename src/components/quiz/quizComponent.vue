@@ -269,6 +269,10 @@ export default {
   width: 200px;
   height: 175px;
   border-radius: 10px;
+  width: 100%;
+  margin-bottom: 40px;
+  flex-direction: row !important;
+  justify-content: space-around !important  ;
   cursor: pointer;
   .option-input {
     position: absolute;

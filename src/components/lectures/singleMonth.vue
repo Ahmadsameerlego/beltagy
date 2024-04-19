@@ -208,18 +208,18 @@
               <div class="mt-3 w-100">
                 <div class="flex_between mb-3 border-bottom pb-2">
                   <div class="d-flex align-items-center">
-                    <i class="fa-solid fa-clock mainColor"></i>
-                    <span class="mx-2 mainColor fw-6 fs-14">المحتوى</span>
+                    <i class="fa-solid fa-clock main_color"></i>
+                    <span class="mx-2 main_color fw-6 fs-14">المحتوى</span>
                   </div>
 
                   <div>
-                    <span class="mainColor fw-6 fs-14">+ 70 ساعة</span>
+                    <span class="main_color fw-6 fs-14">+ 70 ساعة</span>
                   </div>
                 </div>
                 <div class="flex_between mb-3 pb-2">
                   <div class="d-flex align-items-center">
-                    <i class="fa-solid fa-circle-question mainColor"></i>
-                    <span class="mx-2 mainColor fw-6 fs-14"
+                    <i class="fa-solid fa-circle-question main_color"></i>
+                    <span class="mx-2 main_color fw-6 fs-14"
                       >اجمالي الاسئلة</span
                     >
                   </div>
@@ -234,7 +234,7 @@
       </div>
 
 
-      <section class="month-course position-relative d-flex">
+      <section class="month-course position-relative d-flex mt-4">
         <div class="row">
           <div class="col-md-12">
             <div>
