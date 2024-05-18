@@ -13,10 +13,33 @@
             <span class="step flex_center">1</span>
             املئ هذا البيانات لانشاء حساب جديد
           </p>
+           <div class="chooseLogin mt-5" v-if="typeChoosed">
+              <div class="whatsApp mb-3">
+                <button class="btn" @click="chooseType('whatsapp')">
+                  <span>
+                  سجل عن طريق الواتساب ودي اسهل
+                </span>
+                <span>
+                  <i class="fa-brands fa-whatsapp"></i>
+                </span>
+                </button>
+              </div>
+              <div class="phone mb-3">
+               <button class="btn"  @click="chooseType('sms')">
+                 <span>
+                  سجل عن طريق رقم الموبايل
+                </span>
+                <span>
+                    <i class="fa-solid fa-mobile"></i>
+                </span>
+               </button>
+              </div>
+            </div>
 
           <form
             class="flex flex-wrap gap-3 p-fluid mt-4"
             ref="registerForm"
+            v-else
             @submit.prevent="register"
           >
             <div class="row">
@@ -29,7 +52,7 @@
                   <InputText
                     type="text"
                     class="defaultInput2"
-                    v-model="username"
+                    v-model="name"
                     name="name"
                     placeholder="الرجاء ادخال اسم الطالب"
                   />
@@ -69,18 +92,50 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mb-2">
+              <div class="col-md-6 mb-5">
+                <!-- phone  -->
+                <div class="position-relative flex-auto defaultInput">
+                  <label for="integeronly" class="label fw-bold block mb-2"
+                    >المحافظة
+                  </label>
+                  <!-- select phone  -->
+                  <Dropdown
+                    v-model="selectedRegion"
+                    :options="regions"
+                    optionLabel="name"
+                    class="w-100 md:w-14rem"
+                    @change="getRegionId"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6 mb-5 ">
+                <!-- phone  -->
+                <div class="position-relative flex-auto defaultInput">
+                  <label for="integeronly" class="label fw-bold block mb-2"
+                    >المدينة
+                  </label>
+                  <!-- select phone  -->
+                  <Dropdown
+                    v-model="selectedCity"
+                    :options="cities"
+                    optionLabel="name"
+                    class="w-100 md:w-14rem"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-2 mt-3">
                 <!-- user name  -->
                 <div class="position-relative flex-auto">
                   <label for="integeronly" class="label fw-bold block mb-2">
-                    اسم ولي الامر
+                    العنوان
                   </label>
                   <InputText
                     type="text"
                     class="defaultInput2"
-                    v-model="username"
-                    name="name"
-                    placeholder="الرجاء ادخال اسم ولي الامر"
+                    v-model="address"
+                    name="address"
+                    placeholder="الرجاء ادخال العنوان"
                   />
                   <!-- icon  -->
                   <div class="inputIcon">
@@ -89,51 +144,7 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mb-2">
-                <!-- phone  -->
-                <div class="position-relative flex-auto defaultInput">
-                  <label for="integeronly" class="label fw-bold block mb-2"
-                    >رقم جوال ولي الامر
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control defaultInput"
-                    name="phone"
-                    placeholder="الرجاء ادخال رقم جوال ولي الامر"
-                    v-model="phone"
-                  />
-
-                  <!-- icon  -->
-                  <div class="inputIcon">
-                    <img :src="require('@/assets/imgs/phone.svg')" alt="" />
-                  </div>
-
-                  <!-- select phone  -->
-                  
-                </div>
-
-              </div>
-
-                <Message severity="warn"> يرجى العلم انه سيتم الاتصال بولي الامر للتاكد من البيانات </Message>
-
-
-              <div class="col-md-6 mb-2">
-                <!-- phone  -->
-                <div class="position-relative flex-auto defaultInput">
-                  <label for="integeronly" class="label fw-bold block mb-2"
-                    >المحافظة
-                  </label>
-                  <!-- select phone  -->
-                  <Dropdown
-                    v-model="selectedCity"
-                    :options="years"
-                    optionLabel="name"
-                    class="w-100 md:w-14rem"
-                  />
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-2">
+              <div class="col-md-6  mb-2 mt-3">
                 <!-- phone  -->
                 <div class="position-relative flex-auto defaultInput">
                   <label for="integeronly" class="label fw-bold block mb-2"
@@ -154,11 +165,11 @@
                   <!-- select phone  -->
                  <div class="flex flex-wrap gap-3 d-flex justify-content-between">
                     <div class="flex align-items-center">
-                        <RadioButton v-model="ingredient" inputId="ingredient1" name="pizza" value="Cheese" />
+                        <RadioButton v-model="gender" inputId="birth_date1" name="pizza" value="male" />
                         <label for="ingredient1" class="mx-2">ذكر</label>
                     </div>
                     <div class="flex align-items-center">
-                        <RadioButton v-model="ingredient" inputId="ingredient2" name="pizza" value="Mushroom" />
+                        <RadioButton v-model="gender" inputId="birth_date2" name="pizza" value="female" />
                         <label for="ingredient2" class="mx-2">انثي</label>
                     </div>
 
@@ -173,7 +184,7 @@
             </div>
 
             <!-- terms & conditions  -->
-            <div class="d-flex align-items-center">
+            <!-- <div class="d-flex align-items-center">
               <input
                 type="checkbox"
                 class="checkCondition"
@@ -185,10 +196,10 @@
                   الشروط والأحكام
                 </router-link>
               </span>
-            </div>
+            </div> -->
 
             <div class="mt-5">
-              <button class="main_btn w-50 mx-auto flex_center pt-3 pb-3 fs-5">
+              <button class="main_btn w-50 mx-auto flex_center pt-3 pb-3 fs-5" @click.prevent="register">
                 <span v-if="!spinner">انشاء الحساب</span>
                 <div class="spinner-border mx-2" role="status" v-if="spinner">
                   <span class="visually-hidden">Loading...</span>
@@ -211,8 +222,10 @@
     </div>
   </section>
 
-  <!-- <Toast />
-  <sendOtp :openOtp="openOtp"/> -->
+
+
+  <Toast />
+   <sendOtp  :openOtp="openOtp"/>
 </template>
 
 <script>
@@ -220,25 +233,27 @@ import InputText from "primevue/inputtext";
 // import InputNumber from 'primevue/inputnumber';
 import Dropdown from "primevue/dropdown";
 // import Password from "primevue/password";
-import Message from 'primevue/message';
+// import Message from 'primevue/message';
 import Calendar from 'primevue/calendar';
 import RadioButton from 'primevue/radiobutton';
 
-// import Toast from 'primevue/toast';
-
-// import sendOtp from './sendOtp.vue';
+import Toast from 'primevue/toast';
+import axios from "axios";
+import sendOtp from './senOtp.vue';
 // import {mapState, mapActions} from 'vuex';
 export default {
   data() {
     return {
-      username: "",
+      name: "",
       phone: "",
-      selectedCity: {
-        id: 1,
-        name: "السعودية",
-        key: "+966",
-      },
-
+      address : "",
+      // selectedCity: {
+      //   id: 1,
+      //   name: "السعودية",
+      //   key: "+966",
+      // },
+      typeChoosed: true,
+        type : '',
       countries: [],
       ingredient : "",
       password: "",
@@ -248,6 +263,7 @@ export default {
       phoneValid: false,
       conditions: false,
       openOtp: false,
+            parentPhone : false ,
       is_conditions: null,
       date : null,
       years: [
@@ -264,6 +280,12 @@ export default {
           name: "القاهرة",
         },
       ],
+      regions: [],
+      selectedRegion: null,
+      regionID: null,
+      cities: [],
+      selectedCity: null,
+      gender : null
     };
   },
   watch: {
@@ -298,88 +320,86 @@ export default {
     },
     // ...mapState(["common"])
   },
-  //   methods:{
-  //     // get countries
-  //     ...mapActions('common',['getCountries']),
-  //     // register function
-  //      async register(){
-  //       this.disabled = true ;
-  //       this.spinner = true ;
-  //       const fd = new FormData(this.$refs.registerForm);
-  //       fd.append('country_code', this.selectedCity.key);
-  //       fd.append( 'password', this.password );
-  //       fd.append( 'password_confirmation', this.confirm_password );
-  //       if( this.conditions ){
-  //         fd.append( 'is_conditions', 1 );
-  //       }
+  methods: {
+    chooseType(type) {
+      this.type = type;
+      this.typeChoosed = false
+      },
+      async getRegion() {
+        await axios.get('regions')
+          .then((res) => {
+            this.regions = res.data.data.regions; 
+        } )
+      },
+      getRegionId() {
+        this.regionID = this.selectedRegion.id;
+        this.getCities();
+      },
+     async getCities() {
+        await axios.get(`region/${this.regionID}/cities`)
+          .then((res) => {
+            this.cities = res.data.data.cities; 
+        } )
+      },
+      async register() {
+        this.spinner = true;
+        const fd = new FormData();
+        fd.append('name', this.name)
+        fd.append('phone', this.phone)
+        fd.append('address', this.address)
+        fd.append('birth_date', this.date)
+        if (this.selectedRegion !== null) {
+          fd.append('region_id', this.selectedRegion.id)
+        }
+        if (this.selectedCity != null) {
+          fd.append('city_id', this.selectedCity.id)
+        }
+        fd.append('gender', this.gender)
+        fd.append('type', this.type)
 
-  //       try{
-  //         const res = await this.$store.dispatch('auth/register', fd);
-  //         if( res.success == true ){
-  //           this.$toast.add({ severity: 'success', summary: res.message, life: 3000 });
-  //           this.disabled = false ;
-  //           this.spinner = false ;
-  //           // open otp modal
-  //           setTimeout(() => {
-  //             if( this.openOtp == true || this.openOtp == false ){
-  //               this.openOtp = !this.openOtp
-  //             }
-  //           }, 3000);
-  //           localStorage.setItem('phone', this.phone)
-  //           localStorage.setItem('country_code', this.selectedCity.key);
-  //           localStorage.setItem('otpType', 'active');
 
-  //           // check if user active the phone
-  //           localStorage.setItem('isActived', res.data[0].active)
-  //           // check if the user completed his info ( completeRegister )
-  //           localStorage.setItem('isCompleted', res.data[0].is_completed)
-  //           console.log(res.data[0])
-  //           console.log(res.data[0].active)
-  //         }else{
-  //           this.$toast.add({ severity: 'error', summary: res.message, life: 3000 });
-  //           this.disabled = false ;
-  //           this.spinner = false ;
-  //         }
-  //       }catch(err){
-  //         console.error(err)
-  //       }
+        await axios.post('sign-up', fd)
+          .then((res) => {
+            if (res.data.key == 'success') {
+              this.$toast.add({ severity: 'success', summary: res.data.msg, life: 4000 });
+            setTimeout(() => {
+              this.openOtp = true;
+            }, 2000);
+              sessionStorage.setItem('phone', this.phone);
+            } else {
+            this.$toast.add({ severity: 'error', summary: res.data.msg, life: 4000 });
+            }
+          this.spinner = false;
+        } )
+      },
+      chooseCountry(){
+        console.log(this.selectedCity)
+        document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
+      },
 
-  //     },
-  //     checkValid(){
-  //       if( this.username === '' || this.phone === '' || this.password === '' || this.confirm_password === '' || this.passwordMatch === false || this.phoneMatch === true  ){
-  //         this.disabled = true;
-  //       }else if(this.username !== '' && this.phone !== '' && this.password !== '' && this.confirm_password !== ''&& this.passwordMatch === true && this.phoneMatch === false ){
-  //         this.disabled = false ;
-  //       }
-  //     },
-  //     chooseCountry(){
-  //       console.log(this.selectedCity)
-  //       document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
-  //     },
-
-  //   },
+    },
   components: {
     InputText,
     // InputNumber,
     Dropdown,
-    Message,
+    // Message,
     Calendar,
-    RadioButton
+    RadioButton,
     // Password,
-    // Toast,
-    // sendOtp
+    Toast,
+    sendOtp
   },
-  //   mounted(){
-  //     // this.getCountries();
-  //     document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
-
-  //     if( localStorage.getItem('isActived') == 'false' ){
-  //       this.openOtp = true ;
-  //     }
-  //   },
-  //   created(){
-  //     this.getCountries();
-  //   }
+    mounted(){
+          // this.startTimer();
+        fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => sessionStorage.setItem('device_id', data.ip))
+        .catch(error => console.error(error));
+      this.getRegion();
+    },
+    created(){
+      // this.getCountries();
+    }
 };
 </script>
 

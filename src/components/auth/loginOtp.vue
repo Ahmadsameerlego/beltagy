@@ -14,6 +14,7 @@
       <!-- otp  -->
       <div class="position-relative flex-auto">
         <div
+        v-if="type==='sms'"
           style="
             display: flex;
             flex-direction: row;
@@ -21,6 +22,7 @@
           "
         >
           <v-otp-input
+          
             ref="otpInput"
             v-model:value="code"
             name="code"
@@ -33,9 +35,13 @@
             style="flex-direction: row-reverse"
           />
         </div>
+        <div v-else>
+          <input type="text" class="form-control" placeholder="ادخل الرقم الرقم المرسل في واتساب" v-model="whatsAppCode">
+        </div>
       </div>
 
-      <!-- submit  -->
+      <section v-if="type==='sms'">
+        <!-- submit  -->
       <div class="mt-4">
         <button
           class="main_btn pt-3 pb-3 fs-5 w-75 mx-auto flex_center"
@@ -71,15 +77,26 @@
           </p>
         </div>
       </div>
+      </section>
+      <section v-else>
+           <div class="mt-4">
+            <button
+              class="main_btn pt-3 pb-3 fs-5 w-75 mx-auto flex_center"
+              :disabled="WhatsDisabled"
+            >
+              <span v-if="!spinner">تاكيد </span>
+              <div class="spinner-border mx-2" role="status" v-if="spinner">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+      </div>
+      </section>
     </form>
   </Dialog>
 
   <!-- reset password  -->
 
   <Toast />
-
-     <parentPhoneVue :parentPhone="parentPhone" />
-
 </template>
 
 <script>
@@ -88,8 +105,6 @@ import Dialog from "primevue/dialog";
 // reset passwrod component
 // import resetPass from './resetPassword.vue';
 import Toast from "primevue/toast";
-import parentPhoneVue from './parentPhone.vue';
-
 // import { mapState } from 'vuex';
 export default {
   data() {
@@ -103,16 +118,16 @@ export default {
       code: "",
       isCodeSent: false,
       resendTime: false,
-      parentPhone : false ,
       methodName: "",
       otpType: "",
+      whatsAppCode: '',
+      WhatsDisabled : false
     };
   },
   components: {
     Dialog,
     // resetPass ,
     Toast,
-    parentPhoneVue
   },
   watch: {
     openOtp() {
@@ -140,13 +155,15 @@ export default {
     },
     // submit otp form
     async sendOtp() {
-      this.disabled = true;
       this.spinner = true;
+      if (this.type == 'sms') {
+        this.disabled = true;
       const fd = new FormData();
-      fd.append("phone", sessionStorage.getItem("phone"));
+      fd.append("phone", this.phone);
       fd.append("device_id", sessionStorage.getItem("device_id"));
       fd.append("device_type", "web");
-      fd.append("code", this.code);
+      fd.append("type", "sms");
+      fd.append("password", this.code);
 
       // check if the function for the active code or check forget password code
       if (localStorage.getItem("otpType") == "active") {
@@ -156,7 +173,7 @@ export default {
       }
 
       try {
-        await axios.post("activate?_method=patch", fd).then((res) => {
+        await axios.post("sign-in?count_notifications", fd).then((res) => {
           if (res.data.key == "success") {
             this.$toast.add({
               severity: "success",
@@ -168,24 +185,8 @@ export default {
             localStorage.setItem('user' , JSON.stringify(res.data.data.user))
               localStorage.setItem('token', res.data.data.user.token)
             setTimeout(() => {
-              this.parentPhone = true;
+                this.$router.push('/')
             }, 2000);
-            // // check if the function for the active code or check forget password code
-            // if (localStorage.getItem("otpType") == "active") {
-            //   localStorage.setItem("token", res.data.token);
-            //   setTimeout(() => {
-            //     this.otp = false;
-            //     this.$router.push("/compeleteRegister");
-            //   }, 3000);
-            // } else if (localStorage.getItem("otpType") == "forget") {
-            //   setTimeout(() => {
-            //     if (this.openReset == true || this.openReset == false) {
-            //       this.openReset = !this.openReset;
-            //       this.otp = false;
-            //     }
-            //     localStorage.setItem("code", this.code);
-            //   }, 3000);
-            // }
           } else {
             this.$toast.add({
               severity: "error",
@@ -198,6 +199,52 @@ export default {
         });
       } catch (err) {
         console.error(err);
+      }
+      } else {
+        this.WhatsDisabled = true;
+      const fd = new FormData();
+      fd.append("phone", this.phone);
+      fd.append("device_id", sessionStorage.getItem("device_id"));
+      fd.append("device_type", "web");
+      fd.append("type", "sms");
+      fd.append("password", this.code);
+
+      // check if the function for the active code or check forget password code
+      if (localStorage.getItem("otpType") == "active") {
+        this.methodName = "auth/active";
+      } else if (localStorage.getItem("otpType") == "forget") {
+        this.methodName = "auth/forgetCode";
+      }
+
+      try {
+        await axios.get(`whatsapp-verify?OTP=${this.whatsAppCode}&Mobile=${this.phone}`, fd).then((res) => {
+          if (res.data.key == "success") {
+            this.$toast.add({
+              severity: "success",
+              summary: res.data.msg,
+              life: 3000,
+            });
+        
+            localStorage.setItem('user' , JSON.stringify(res.data.data.user))
+              localStorage.setItem('token', res.data.data.user.token)
+            setTimeout(() => {
+                this.$router.push('/')
+            }, 2000);
+           
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: res.data.msg,
+              life: 3000,
+            });
+           
+          }
+           this.WhatsDisabled = false;
+            this.spinner = false;
+        });
+      } catch (err) {
+        console.error(err);
+      }
       }
     },
     // resend code
@@ -230,7 +277,10 @@ export default {
     },
   },
   props: {
-    openOtp: Boolean,
+      openOtp: Boolean,
+    phone: Number,
+    whatsCode: String,
+    type : String
   },
   beforeUnmount() {
     clearInterval(this.intervalId);

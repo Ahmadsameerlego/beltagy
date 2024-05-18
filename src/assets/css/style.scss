@@ -239,3 +239,34 @@ $main-color2: #6D98DB   ;
 .dropdown-toggle{
     border: 1px solid #fff !important;
 }
+
+@media(max-width:768px){
+    .navbar-nav{
+            position: fixed;
+    background: #ffc936;
+    width: 100%;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    z-index: 9999;
+    padding: 0 !important;
+    }
+    #homeIntro .job_image {
+    height: 135px !important;
+    img{
+        height: 135px !important;
+    } 
+}    .downloadImage{display: none;}
+.loginImage{display: none;}
+.p-dialog.p-component{width: 100vw !important;}
+.otp-input{width: 26px !important; height: 26px !important;margin: 0 5px !important;}
+.loginSection .main_btn{
+    width: 200px !important;
+}
+.chooseLogin .phone, .chooseLogin .whatsApp{width: 100% !important;}
+.singleMonthCard{
+    flex-direction: column !important   ;
+}
+}

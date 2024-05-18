@@ -19,6 +19,10 @@
             ref="registerForm"
             @submit.prevent="register"
           >
+            <div class="profile_image mx-auto d-flex position-relative mb-3">
+              <img :src="image" alt="" />
+              <input type="file" name="image" class="image" @change="updateProfileImage" />
+            </div>
             <div class="row">
               <div class="col-md-6 mb-2">
                 <!-- user name  -->
@@ -29,7 +33,7 @@
                   <InputText
                     type="text"
                     class="defaultInput2"
-                    v-model="username"
+                    v-model="name"
                     name="name"
                     placeholder="الرجاء ادخال اسم الطالب"
                   />
@@ -60,13 +64,6 @@
                   </div>
 
                   <!-- select phone  -->
-                  <Dropdown
-                    v-model="selectedCity"
-                    @change="chooseCountry"
-                    :options="countries"
-                    optionLabel="name"
-                    class="w-full md:w-14rem"
-                  />
                 </div>
                 <div>
                   <span v-if="phoneValid" class="text-danger">
@@ -75,93 +72,97 @@
                 </div>
               </div>
 
-              <div class="col-md-6 mb-2">
-                <!-- user name  -->
-                <div class="position-relative flex-auto">
-                  <label for="integeronly" class="label fw-bold block mb-2">
-                    اسم ولي الامر
-                  </label>
-                  <InputText
-                    type="text"
-                    class="defaultInput2"
-                    v-model="username"
-                    name="name"
-                    placeholder="الرجاء ادخال اسم ولي الامر"
-                  />
-                  <!-- icon  -->
-                  <div class="inputIcon">
-                    <img :src="require('@/assets/imgs/user.svg')" alt="" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 mb-2">
+              <div class="col-md-6 mb-5">
                 <!-- phone  -->
                 <div class="position-relative flex-auto defaultInput">
                   <label for="integeronly" class="label fw-bold block mb-2"
-                    >رقم جوال ولي الامر
+                    >المحافظة
                   </label>
-                  <input
-                    type="text"
-                    class="form-control defaultInput"
-                    name="phone"
-                    placeholder="الرجاء ادخال رقم جوال ولي الامر"
-                    v-model="phone"
-                  />
-
-                  <!-- icon  -->
-                  <div class="inputIcon">
-                    <img :src="require('@/assets/imgs/phone.svg')" alt="" />
-                  </div>
-
                   <!-- select phone  -->
                   <Dropdown
-                    v-model="selectedCity"
-                    @change="chooseCountry"
-                    :options="countries"
+                    v-model="selectedRegion"
+                    :options="regions"
                     optionLabel="name"
-                    class="w-full md:w-14rem"
+                    class="w-100 md:w-14rem"
+                    @change="getRegionId"
                   />
                 </div>
-                <div>
-                  <span v-if="phoneValid" class="text-danger">
-                    يجب ان يكون رقم الهاتف بين ٩ او ١٠ ارقام
-                  </span>
-                </div>
               </div>
-
-              <div class="col-md-6 mb-2">
+              <div class="col-md-6 mb-5">
                 <!-- phone  -->
                 <div class="position-relative flex-auto defaultInput">
                   <label for="integeronly" class="label fw-bold block mb-2"
-                    >السنة الدراسية
+                    >المدينة
                   </label>
                   <!-- select phone  -->
                   <Dropdown
                     v-model="selectedCity"
-                    :options="years"
+                    :options="cities"
                     optionLabel="name"
                     class="w-100 md:w-14rem"
                   />
                 </div>
               </div>
 
-              <div class="col-md-6 mb-2">
+              <div class="col-md-6 mb-2 mt-3">
                 <!-- user name  -->
                 <div class="position-relative flex-auto">
                   <label for="integeronly" class="label fw-bold block mb-2">
-                    اسم المدرسة
+                    العنوان
                   </label>
                   <InputText
                     type="text"
                     class="defaultInput2"
-                    v-model="username"
-                    name="name"
-                    placeholder="الرجاء ادخال اسم المدرسة"
+                    v-model="address"
+                    name="address"
+                    placeholder="الرجاء ادخال العنوان"
                   />
                   <!-- icon  -->
                   <div class="inputIcon">
                     <img :src="require('@/assets/imgs/user.svg')" alt="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-2 mt-3">
+                <!-- phone  -->
+                <div class="position-relative flex-auto defaultInput">
+                  <label for="integeronly" class="label fw-bold block mb-2"
+                    >تاريخ الميلاد
+                  </label>
+                  <!-- select phone  -->
+                  <Calendar v-model="date" />
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <!-- phone  -->
+                <div class="position-relative flex-auto defaultInput">
+                  <label for="integeronly" class="label fw-bold block mb-2"
+                    >يرجى تحديد النوع
+                  </label>
+                  <!-- select phone  -->
+                  <div
+                    class="flex flex-wrap gap-3 d-flex justify-content-between"
+                  >
+                    <div class="flex align-items-center">
+                      <RadioButton
+                        v-model="gender"
+                        inputId="birth_date1"
+                        name="pizza"
+                        value="male"
+                      />
+                      <label for="ingredient1" class="mx-2">ذكر</label>
+                    </div>
+                    <div class="flex align-items-center">
+                      <RadioButton
+                        v-model="gender"
+                        inputId="birth_date2"
+                        name="pizza"
+                        value="female"
+                      />
+                      <label for="ingredient2" class="mx-2">انثي</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -176,15 +177,6 @@
               </button>
             </div>
 
-            <div class="mt-3">
-              <router-link
-                to="/changePassword"
-                class="sec_btn w-50 mx-auto flex_center pt-3 pb-3 fs-5"
-              >
-                تغيير الرقم السري
-              </router-link>
-            </div>
-
             <!-- new account  -->
           </form>
         </section>
@@ -192,38 +184,29 @@
     </div>
   </section>
 
-  <!-- <Toast />
-  <sendOtp :openOtp="openOtp"/> -->
+  <Toast />
+  <!--  <sendOtp :openOtp="openOtp"/> -->
 </template>
 
 <script>
+import axios from "axios";
 import InputText from "primevue/inputtext";
-// import InputNumber from 'primevue/inputnumber';
-// import Dropdown from "primevue/dropdown";
-// import Password from "primevue/password";
+import Dropdown from "primevue/dropdown";
+import Calendar from "primevue/calendar";
+import RadioButton from "primevue/radiobutton";
+import Toast from "primevue/toast";
+import moment from 'moment'
 
-// import Toast from 'primevue/toast';
-
-// import sendOtp from './sendOtp.vue';
-// import {mapState, mapActions} from 'vuex';
 export default {
   data() {
     return {
-      username: "",
+      name: "",
+      image: "",
       phone: "",
-      selectedCity: {
-        id: 1,
-        name: "السعودية",
-        key: "+966",
-      },
-
+      address: "",
       countries: [],
-      password: "",
-      confirm_password: "",
       disabled: true,
       spinner: false,
-      phoneValid: false,
-      conditions: false,
       openOtp: false,
       is_conditions: null,
       years: [
@@ -240,123 +223,173 @@ export default {
           name: "الثالث الثانوي",
         },
       ],
+      regions: [],
+      selectedRegion: null,
+      regionID: null,
+      cities: [],
+      selectedCity: null,
+      cityID: "",
+      gender: null,
+      date: "",
     };
   },
-  watch: {
-    confirm_password() {
-      this.showValid = true;
-    },
-    passwordMatch() {
-      if (this.passwordMatch == true) {
-        this.disabled = false;
-      } else {
-        this.disabled = true;
-      }
-    },
-    phone() {
-      if (this.phoneMatch === true) {
-        this.phoneValid = true;
-      } else {
-        this.phoneValid = false;
-      }
-      this.phone = this.phone.replace(/[^0-9]/g, "");
-    },
-  },
   computed: {
-    passwordMatch() {
-      return this.password === this.confirm_password;
-    },
-    phoneMatch() {
-      return this.phone.length < 9;
-    },
-    passwordLength() {
-      return this.password.length < 6;
-    },
-    // ...mapState(["common"])
+    formatedDate() {
+        return moment(this.date).format('MMMM Do YYYY')
+      }
   },
-  //   methods:{
-  //     // get countries
-  //     ...mapActions('common',['getCountries']),
-  //     // register function
-  //      async register(){
-  //       this.disabled = true ;
-  //       this.spinner = true ;
-  //       const fd = new FormData(this.$refs.registerForm);
-  //       fd.append('country_code', this.selectedCity.key);
-  //       fd.append( 'password', this.password );
-  //       fd.append( 'password_confirmation', this.confirm_password );
-  //       if( this.conditions ){
-  //         fd.append( 'is_conditions', 1 );
-  //       }
-
-  //       try{
-  //         const res = await this.$store.dispatch('auth/register', fd);
-  //         if( res.success == true ){
-  //           this.$toast.add({ severity: 'success', summary: res.message, life: 3000 });
-  //           this.disabled = false ;
-  //           this.spinner = false ;
-  //           // open otp modal
-  //           setTimeout(() => {
-  //             if( this.openOtp == true || this.openOtp == false ){
-  //               this.openOtp = !this.openOtp
-  //             }
-  //           }, 3000);
-  //           localStorage.setItem('phone', this.phone)
-  //           localStorage.setItem('country_code', this.selectedCity.key);
-  //           localStorage.setItem('otpType', 'active');
-
-  //           // check if user active the phone
-  //           localStorage.setItem('isActived', res.data[0].active)
-  //           // check if the user completed his info ( completeRegister )
-  //           localStorage.setItem('isCompleted', res.data[0].is_completed)
-  //           console.log(res.data[0])
-  //           console.log(res.data[0].active)
-  //         }else{
-  //           this.$toast.add({ severity: 'error', summary: res.message, life: 3000 });
-  //           this.disabled = false ;
-  //           this.spinner = false ;
-  //         }
-  //       }catch(err){
-  //         console.error(err)
-  //       }
-
-  //     },
-  //     checkValid(){
-  //       if( this.username === '' || this.phone === '' || this.password === '' || this.confirm_password === '' || this.passwordMatch === false || this.phoneMatch === true  ){
-  //         this.disabled = true;
-  //       }else if(this.username !== '' && this.phone !== '' && this.password !== '' && this.confirm_password !== ''&& this.passwordMatch === true && this.phoneMatch === false ){
-  //         this.disabled = false ;
-  //       }
-  //     },
-  //     chooseCountry(){
-  //       console.log(this.selectedCity)
-  //       document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
-  //     },
-
-  //   },
+  methods: {
+    async getRegion() {
+      await axios.get("regions").then((res) => {
+        this.regions = res.data.data.regions;
+      });
+    },
+    getRegionId() {
+      this.regionID = this.selectedRegion.id;
+      this.getCities();
+    },
+    async getCities() {
+      await axios.get(`region/${this.regionID}/cities`).then((res) => {
+        this.cities = res.data.data.cities;
+      });
+    },
+    async getAllCities() {
+      await axios.get(`cities`).then((res) => {
+        this.cities = res.data.data.cities;
+      });
+    },
+    updateProfileImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // Read the file as a data URL
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.image = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    // get user data
+    async getProfile() {
+      await axios
+        .get("profile", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          if (res.data.key == "success") {
+            let user = res.data.data.user;
+            this.phone = user.phone;
+            this.name = user.name;
+            this.address = user.address;
+            this.regionID = user.region_id;
+            this.date =  moment(user.birth_date).format('MMMM Do YYYY');
+            this.gender = user.gender;
+            this.image = user.image;
+            for (let i = 0; i < this.regions.length; i++) {
+              if (this.regions[i].id == user.region_id) {
+                this.selectedRegion = this.regions[i];
+              }
+            }
+            this.cityID = user.city_id;
+            for (let i = 0; i < this.cities.length; i++) {
+              if (this.cities[i].id == user.city_id) {
+                this.selectedCity = this.cities[i];
+              }
+            }
+          }
+        });
+    },
+    // register function
+    async register() {
+      this.disabled = true;
+      this.spinner = true;
+      const fd = new FormData(this.$refs.registerForm);
+        fd.append('name', this.name)
+        fd.append('phone', this.phone)
+        fd.append('address', this.address)
+        fd.append('birth_date', this.date)
+        if (this.selectedRegion !== null) {
+          fd.append('region_id', this.selectedRegion.id)
+        }
+        if (this.selectedCity != null) {
+          fd.append('city_id', this.selectedCity.id)
+        }
+        fd.append('gender', this.gender)
+      try {
+        await axios.post('update-profile?_method=put', fd ,{
+          headers: {
+            Authorization : `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+          .then((res) => {
+            if (res.data.key === 'success') {
+          this.$toast.add({
+            severity: "success",
+            summary: res.data.msg,
+            life: 3000,
+          });
+          this.disabled = false;
+          this.spinner = false;
+        } else {
+          this.$toast.add({
+            severity: "error",
+            summary: res.data.msg,
+            life: 3000,
+          });
+          this.disabled = false;
+          this.spinner = false;
+        }    
+        } )
+        
+      } catch (err) {
+        console.error(err);
+      }
+    },
+  },
   components: {
     InputText,
     // InputNumber,
-    // Dropdown,
+    Dropdown,
     // Password,
-    // Toast,
+    Toast,
+    RadioButton,
+    Calendar,
     // sendOtp
   },
-  //   mounted(){
-  //     // this.getCountries();
-  //     document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
-
-  //     if( localStorage.getItem('isActived') == 'false' ){
-  //       this.openOtp = true ;
-  //     }
-  //   },
+  mounted() {
+    this.getRegion();
+    this.getProfile();
+    this.getAllCities();
+  },
   //   created(){
   //     this.getCountries();
   //   }
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.profile_image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .image{
+    position: absolute;
+    widows: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    opacity: 0;
+  }
+}
 .p-dropdown {
   position: absolute !important;
   width: 25%;

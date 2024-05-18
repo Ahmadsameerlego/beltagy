@@ -70,7 +70,7 @@
                     :href="social.link"
                     target="_blank"
                   >
-                    <img :src="social.image" :alt="social.name" />
+                    <img :src="social.icon" :alt="social.name" />
                   </a>
                 </div>
               </ul>
@@ -99,29 +99,24 @@
 
 <script>
 // import { mapGetters , mapActions } from 'vuex';
+import axios from 'axios';
 export default {
   data() {
     return {
-      socials: [
-        {
-          image: require("@/assets/imgs/facebook.png"),
-          link: "https://www.facebook.com/",
-        },
-        {
-          image: require("@/assets/imgs/twitter.png"),
-          link: "https://www.twitter.com/",
-        },
-        {
-          image: require("@/assets/imgs/youtube.png"),
-          link: "https://www.youtube.com/",
-        },
-        {
-          image: require("@/assets/imgs/insta.png"),
-          link: "https://www.instagram.com/",
-        },
-      ],
+      socials: [],
     };
   },
+  methods: {
+    async getSocials() {
+      await axios.get('socials')
+        .then((res) => {
+          this.socials = res.data.data.socials;
+        } )
+      }
+  },
+  mounted() {
+    this.getSocials();
+  }
 };
 </script>
 

@@ -50,13 +50,13 @@
           class="user_interaction d-flex justify-content-between align-items-center"
         >
           <!-- search  -->
-          <router-link to="/exploreJobs" class="search flex_center mb-0 mx-2">
+          <!-- <router-link to="/allMonthes" class="search flex_center mb-0 mx-2">
             <img :src="require('@/assets/imgs/Vector.png')" alt="" />
-          </router-link>
+          </router-link> -->
           <!-- alert  -->
           <router-link
             to="/notificationPage"
-            class="alert flex_center mb-0 mx-2 position-relative"
+            class="alert flex_center mb-0 mx-4 position-relative"
             v-if="isLoggedIn"
           >
             <i class="fa-regular fa-bell"></i>
@@ -64,13 +64,7 @@
           </router-link>
 
           <!-- messages  -->
-          <router-link
-            to="/rooms"
-            class="message flex_center mb-0 mx-2"
-            v-if="isLoggedIn"
-          >
-            <img :src="require('@/assets/imgs/messages.png')" alt="" />
-          </router-link>
+          
 
           <!-- lang  -->
           <!-- <button class="lang flex_center mx-2" @click="switchLang"> 
@@ -79,14 +73,14 @@
                 </button> -->
 
           <!-- login  -->
-          <router-link class="bordered_btn mx-2" to="/login">
+          <router-link v-if="!isLoggedIn" class="bordered_btn mx-2" to="/login">
             تسجيل الدخول
           </router-link>
           <!-- register  -->
           <!-- <router-link class="main_btn mx-2" to="/register" v-if="!isLoggedIn"> {{ $t('nav.register') }} </router-link> -->
 
           <!-- profile dropdown  -->
-          <div class="dropdown profile br-5">
+          <div class="dropdown profile br-5" v-if="isLoggedIn">
             <button
               class="btn dropdown-toggle px-4 br-5 pt-2 pb-2"
               type="button"
@@ -103,7 +97,7 @@
                 height="30"
                 alt=""
               />
-              <span class="name">ازيك يا Ahmed</span>
+              <span class="name">ازيك يا {{ username }}</span>
 
               <i class="fa-regular fa-user user_profile"></i>
             </button>
@@ -154,55 +148,25 @@
 
 <script>
 // import { mapState } from "vuex" ;
-// import axios from 'axios';
-// import Toast from 'primevue/toast';
+import axios from 'axios';
+import Toast from 'primevue/toast';
 
-// export default {
-//     data(){
-//         return{
-//             open : true,
-//             isLoggedIn : false,
-//             username : '',
-//             count : 0
-//         }
-//     },
+export default {
+    data(){
+        return{
+            open : true,
+            isLoggedIn : false,
+            username : '',
+            count : 0
+        }
+    },
 //     computed:{
 //         ...mapState(["auth"])
 //     },
-//     components:{
-//         Toast
-//     },
-//     methods:{
-//         // switch lang
-//         switchLang(){
-//             let lang = 'ar';
-//             if(this.$i18n.locale == 'ar'){
-//                 lang = 'en';
-//                 this.arabic = false;
-//             }
-
-//             if(localStorage.getItem('locale')){
-//                 localStorage.removeItem('locale');
-//             }
-
-//             localStorage.setItem('locale' ,lang);
-//             this.arabic = true;
-
-//             location.reload()
-//         },
-
-//         // toggle bar
-//         toggle_bar(){
-//             this.$refs.toggle_nv.classList.toggle('active');
-
-//             let icon = this.$refs.toggleICon.children[0] ;
-//             if( !icon.classList.contains('fa-x') ){
-//                 icon.classList.add('fa-x');
-//             }else{
-//                 icon.classList.add('fa-bars');
-//             }
-//         },
-
+    components:{
+        Toast
+    },
+    methods:{
 //         // get notfication counter
 //         async getNotCounter(){
 //             const token = localStorage.getItem('token');
@@ -217,57 +181,43 @@
 //             })
 //         },
 
-//         // close nav bar outside
-//         // closeNavbarOnClickOutside(event) {
-//         //     const navBar = this.$refs.toggle_nv;
-//         //     const bar = this.$refs.toggleICon.children[0];
-
-//         //     if (!navBar.contains(event.target) && !bar.contains(event.target)) {
-//         //         this.$refs.toggle_nv.classList.remove('active');
-//         //         this.$refs.toggleICon.children[0].classList.add('fa-bars');
-//         //     }
-//         // },
 //         // sign out
-//         async signOut(){
-//             const token = localStorage.getItem('token');
-//             // const token = JSON.parse(localStorage.getItem('user'))[0].token;
-//             const headers = {
-//                 Authorization: `Bearer ${token}`,
-//             };
-//             await axios.delete('user/logout', {headers})
-//             .then( (res)=>{
-//                 if( res.data.key == 'success' ){
-//                     this.$toast.add({ severity: 'success', summary: res.data.msg, life: 3000 });
-//                     setTimeout(() => {
-//                         this.$router.push('/')
-//                     }, 1000);
-//                     location.reload();
-//                     localStorage.removeItem('token');
-//                     localStorage.removeItem('isAuth');
-//                     localStorage.removeItem('user');
-//                     localStorage.removeItem('isCompleted');
-//                     localStorage.removeItem('isActived');
-//                 }else{
-//                     this.$toast.add({ severity: 'error', summary: res.data.msg, life: 3000 });
-//                 }
-//             } )
-//         }
-//     },
+        async signOut(){
+            const token = localStorage.getItem('token');
+            // const token = JSON.parse(localStorage.getItem('user'))[0].token;
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            await axios.delete('sign-out', {headers})
+            .then( (res)=>{
+                if( res.data.key == 'success' ){
+                    this.$toast.add({ severity: 'success', summary: res.data.msg, life: 3000 });
+                    setTimeout(() => {
+                        this.$router.push('/login')
+                    }, 1000);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                }else{
+                    this.$toast.add({ severity: 'error', summary: res.data.msg, life: 3000 });
+                }
+            } )
+        }
+    },
 
-//     mounted(){
-//         // window.addEventListener('click', this.closeNavbarOnClickOutside);
-//         if( localStorage.getItem('token') ){
-//             this.isLoggedIn = true ;
-//         }
-//         if( localStorage.getItem('user') ){
-//             this.username = JSON.parse(localStorage.getItem('user')).name ;
-//         }
-//         this.getNotCounter();
-//     },
+    mounted(){
+        // window.addEventListener('click', this.closeNavbarOnClickOutside);
+        if( localStorage.getItem('token') ){
+            this.isLoggedIn = true ;
+        }
+        if( localStorage.getItem('user') ){
+            this.username = JSON.parse(localStorage.getItem('user')).name ;
+        }
+        // this.getNotCounter();
+    },
 //     beforeUnmount(){
 //         // window.addEventListener('click', this.closeNavbarOnClickOutside);
 //     }
-// }
+}
 </script>
 
 <style lang="scss">

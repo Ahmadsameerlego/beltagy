@@ -1,7 +1,7 @@
 <template>
   <Dialog v-model:visible="otp" modal :style="{ width: '50vw' }">
-    <h5 class="fw-bold text-center">التاكد من رقم الموبايل</h5>
-    <p class="text-center">على الرقم ده هيوصلك رسالة SMS اكتبه</p>
+    <h5 class="fw-bold text-center">اكتب رقم ولي الامر</h5>
+    <!-- <p class="text-center">على الرقم ده هيوصلك رسالة SMS اكتبه</p> -->
     <div class="logo">
       <img :src="require('@/assets/imgs/forget2.svg')" alt="" />
     </div>
@@ -20,18 +20,22 @@
             justify-content: space-evenly;
           "
         >
-          <v-otp-input
-            ref="otpInput"
-            v-model:value="code"
-            name="code"
-            input-classes="otp-input"
-            separator=""
-            :num-inputs="6"
-            :should-auto-focus="true"
-            autofocus
-            input-type="letter-numeric"
-            style="flex-direction: row-reverse"
-          />
+         <div class="w-100">
+            <input
+                    type="text"
+                    class="form-control defaultInput"
+                    name="phone"
+                    placeholder="الرجاء ادخال رقم الجوال"
+                    v-model="phone"
+                  />
+         </div>
+       
+        </div>
+         <div class="mt-3">
+            <Message severity="warn">
+                يرجي العلم انه سيتم الاتصال بولي الامر للتاكد من البيانات
+            </Message>
+
         </div>
       </div>
 
@@ -48,48 +52,23 @@
         </button>
       </div>
 
-      <div class="flex_between w-75 mx-auto d-flex">
-        <div class="flex_center newAcc">
-          <p class="fs-6 mt-4 fw-6" style="color: #15364d !important">
-            لم يتم الارسال ؟
-            <button
-              type="button"
-              class="fw-bold btn p-0"
-              @click.prevent="resendCode"
-              :disabled="isCodeSent"
-            >
-              اعادة ارسال
-            </button>
-          </p>
-        </div>
-
-        <div v-if="resendTime">
-          <p v-if="timer > 0" class="text-center mt-3">
-            متبقي<span class="" style="color: #15364d !important"
-              >{{ timer }}ثانية</span
-            >
-          </p>
-        </div>
-      </div>
+     
     </form>
   </Dialog>
 
   <!-- reset password  -->
 
   <Toast />
-
-     <parentPhoneVue :parentPhone="parentPhone" />
-
 </template>
 
 <script>
 import axios from "axios";
+import Message from 'primevue/message';
+
 import Dialog from "primevue/dialog";
 // reset passwrod component
 // import resetPass from './resetPassword.vue';
 import Toast from "primevue/toast";
-import parentPhoneVue from './parentPhone.vue';
-
 // import { mapState } from 'vuex';
 export default {
   data() {
@@ -98,24 +77,24 @@ export default {
       timer: 60,
       intervalId: null,
       openReset: false,
-      disabled: true,
+      disabled: false,
       spinner: false,
       code: "",
       isCodeSent: false,
       resendTime: false,
-      parentPhone : false ,
       methodName: "",
-      otpType: "",
+        otpType: "",
+      phone : ''
     };
   },
   components: {
     Dialog,
     // resetPass ,
-    Toast,
-    parentPhoneVue
+      Toast,
+    Message
   },
   watch: {
-    openOtp() {
+    parentPhone() {
       this.otp = true;
     },
     code() {
@@ -142,21 +121,9 @@ export default {
     async sendOtp() {
       this.disabled = true;
       this.spinner = true;
-      const fd = new FormData();
-      fd.append("phone", sessionStorage.getItem("phone"));
-      fd.append("device_id", sessionStorage.getItem("device_id"));
-      fd.append("device_type", "web");
-      fd.append("code", this.code);
-
-      // check if the function for the active code or check forget password code
-      if (localStorage.getItem("otpType") == "active") {
-        this.methodName = "auth/active";
-      } else if (localStorage.getItem("otpType") == "forget") {
-        this.methodName = "auth/forgetCode";
-      }
 
       try {
-        await axios.post("activate?_method=patch", fd).then((res) => {
+        await axios.patch(`set-parent-phone?id=15&parent_phone=${this.phone}`).then((res) => {
           if (res.data.key == "success") {
             this.$toast.add({
               severity: "success",
@@ -165,27 +132,10 @@ export default {
             });
             this.disabled = false;
             this.spinner = false;
-            localStorage.setItem('user' , JSON.stringify(res.data.data.user))
-              localStorage.setItem('token', res.data.data.user.token)
+            
             setTimeout(() => {
-              this.parentPhone = true;
+                this.$router.push('/')
             }, 2000);
-            // // check if the function for the active code or check forget password code
-            // if (localStorage.getItem("otpType") == "active") {
-            //   localStorage.setItem("token", res.data.token);
-            //   setTimeout(() => {
-            //     this.otp = false;
-            //     this.$router.push("/compeleteRegister");
-            //   }, 3000);
-            // } else if (localStorage.getItem("otpType") == "forget") {
-            //   setTimeout(() => {
-            //     if (this.openReset == true || this.openReset == false) {
-            //       this.openReset = !this.openReset;
-            //       this.otp = false;
-            //     }
-            //     localStorage.setItem("code", this.code);
-            //   }, 3000);
-            // }
           } else {
             this.$toast.add({
               severity: "error",
@@ -230,7 +180,7 @@ export default {
     },
   },
   props: {
-    openOtp: Boolean,
+    parentPhone: Boolean,
   },
   beforeUnmount() {
     clearInterval(this.intervalId);

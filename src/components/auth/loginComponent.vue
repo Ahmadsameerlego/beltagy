@@ -17,7 +17,32 @@
         <div class="row" style="width: 93%; margin: auto">
           <!-- right side  -->
           <div class="col-md-6 mb-2">
+
+           
+            <div class="chooseLogin mt-5 w-100" v-if="typedChoosen">
+              <div class="whatsApp mb-3 w-100">
+                <button class="btn w-100" @click="chooseType('whatsapp')">
+                  <span>
+                  سجل عن طريق الواتساب ودي اسهل
+                </span>
+                <span>
+                  <i class="fa-brands fa-whatsapp"></i>
+                </span>
+                </button>
+              </div>
+              <div class="phone mb-3 w-100">
+               <button class="btn w-100"  @click="chooseType('sms')">
+                 <span>
+                  سجل عن طريق رقم الموبايل
+                </span>
+                <span>
+                    <i class="fa-solid fa-mobile"></i>
+                </span>
+               </button>
+              </div>
+            </div>
             <form
+            v-else
               ref="loginForm"
               class="flex flex-wrap gap-3 p-fluid"
               @submit.prevent="login"
@@ -40,66 +65,17 @@
                   <img :src="require('@/assets/imgs/phone.svg')" alt="" />
                 </div>
 
-                <!-- select phone  -->
-                <!-- <Dropdown
-                  v-model="selectedCity"
-                  :options="countries"
-                  optionLabel="key"
-                  @change="chooseCountry"
-                  class="w-full md:w-14rem"
-                  style="top: 32px !important"
-                /> -->
+               
               </div>
-
-              <!-- start phone validations  -->
-              <!-- phone required  -->
-              <!-- <div class="text-danger" v-if="required"> {{ $t('auth.phoneRequired') }} </div> -->
-              <!-- phone length  -->
-              <!-- <div class="text-danger" v-if="lengthValid"> {{ $t('auth.phoneValid') }} </div> -->
-              <!-- end phone validations  -->
-
-              <!-- password  -->
-              <!-- <div class="position-relative flex-auto mt-3">
-                <label for="integeronly" class="label fw-bold block mb-2">
-                  الرقم السري
-                </label>
-                <Password
-                  v-model="password"
-                  :feedback="false"
-                  toggleMask
-                  class="defaultInput"
-                  placeholder="قم بادخال الرقم السري"
-                />
-
-                <div class="inputIcon">
-                  <img :src="require('@/assets/imgs/lock.svg')" alt="" />
-                </div>
-              </div> -->
-
-              <!-- phone error  -->
-              <!-- <div class="error" v-if="passwordRequied">
-                <span class="text-danger" > حقل كلمة المرور مطلوب </span>
-              </div> -->
-
-              <!-- forget password  -->
-              <!-- <div class="d-flex justify-content-end mt-2">
-                <button
-                  class="btn forgetPass"
-                  type="button"
-                  @click="openForget()"
-                >
-                  هل نسيت الرقم السري
-                </button>
-              </div> -->
 
               <!-- submit  -->
               <div class="mt-4">
-                <button class="main_btn w-100 pt-3 pb-3 fs-5" @click="openOtp=true">
-                  دخول
-                  <!-- <span v-if="!spinner">  </span>
+                <button class="main_btn w-100 pt-3 pb-3 fs-5" @click.prevent="login">
+                  
+                  <span v-if="!spinner"> دخول </span>
                   <div class="spinner-border mx-2" role="status" v-if="spinner">
                     <span class="visually-hidden">Loading...</span>
-                  </div> -->
+                  </div>
                 </button>
               </div>
 
@@ -113,10 +89,6 @@
                 </p>
               </div>
 
-              <!-- register problem  -->
-              <!-- <div class="flex_center newAcc">
-                <p class="fs-6 mt-0 fw-6"> {{ $t('auth.p1')  }} <button  class="btn  mainColor contactUs" @click="openContact" type="button"> {{  $t('auth.p2')  }} </button> </p>  
-              </div> -->
             </form>
           </div>
 
@@ -142,156 +114,135 @@
       <contactProblem :openContactModal="openContactModal" /> -->
     </div>
   </section>
-  <sendOtp :openOtp="openOtp" />
-  <!-- <Toast /> -->
+  <sendOtp :openOtp="openOtp" :phone="phone" :type="type" :whatsCode="whatsCode" />
+  <Toast />
 </template>
 
 <script>
-// import Password from "primevue/password";
-
-// // import components
-// import forgetPass from './forgetPass.vue';
-// import contactProblem from './contactProblem.vue';
-// import Dropdown from "primevue/dropdown";
-// import Toast from 'primevue/toast';
-import sendOtp from './senOtp.vue';
-
-// import { mapActions, mapState } from 'vuex';
+import Toast from 'primevue/toast';
+import sendOtp from './loginOtp.vue';
+import axios from 'axios';
 export default {
   data() {
     return {
-      //   phone : '',
+        phone : '',
       password: "",
-      openOtp : false
+      openOtp : false,
 
       //   disabled : true,
-      //   spinner : false ,
-      //   visible : false ,
-      //   lengthValid : false,
-      //   openContactModal : false ,
-      //   required : false,
-      //   passwordRequied : false,
-      //   selectedCity : {
-      //         "id": 1,
-      //         "name": "السعودية",
-      //         "key": "+966"
-      //     },
+      spinner: false,
+      typedChoosen: true,
+      type: '',
+        whatsCode : ''
+      
     };
   },
-  //   computed:{
-  //     ...mapState(["common"])
 
-  //   },
-  //   watch:{
-  //     phone(){
-  //       this.disabled = false ;
-  //     }
-  //   },
 
   components: {
     // Password,
     // forgetPass,
     // contactProblem,
     // Dropdown,
-    // Toast,
+    Toast,
     sendOtp
   },
-  //   methods:{
-  //     ...mapActions('common',['getCountries']),
+  methods: {
+       chooseType(type) {
+      this.type = type;
+      this.typedChoosen = false
+      },
+      
+      // login
+      async login() {
+        this.spinner = true;
+      try {
+        await axios
+          .get(`resend-code?phone=${this.phone}&type=${this.type}`)
+          .then((res) => {
+            if (res.data.key == "success") {
+              this.$toast.add({
+                severity: "success",
+                summary: res.data.msg,
+                life: 3000,
+              });
+              // this.startTimer();
+              // this.timer = 60;
+              // this.isCodeSent = true;
+              // this.resendTime = true;
+              if (this.type === 'whatsapp') {
+                this.whatsCode = res.data.data.Code;
+                setTimeout(() => {
+                  window.open(res.data.data.Clickable, '_blank');
+                }, 2000);
+                setTimeout(() => {
+                  this.openOtp = true;
+                }, 4000);
+              } else {
+                 setTimeout(() => {
+                  this.openOtp = true;
+                }, 2000);
+              }
+            } else {
+              this.$toast.add({
+                severity: "error",
+                summary: res.data.msg,
+                life: 3000,
+              });
+            }
+            this.spinner = false;
+          });
+      } catch (err) {
+        console.error(err);
+      }
+    },
 
-  //     // open forget password modal
-  //     openForget(){
-  //       if(this.visible == true || this.visible == false){
-  //         this.visible = !this.visible ;
-  //       }
-  //     },
-  //     // open contact problem modal
-  //     openContact(){
-  //       if( this.openContactModal == true || this.openContactModal == false ){
-  //         this.openContactModal = !this.openContactModal ;
-  //       }
-  //     },
-  //     // login
-  //     async login(){
-  //       this.disabled = true ;
-  //       this.spinner = true ;
-  //       const fd = new FormData();
-  //       fd.append('country_code', this.selectedCity.key);
-  //       fd.append( 'password', this.password );
-  //       fd.append( 'phone', this.phone );
-  //       fd.append('device_id', localStorage.getItem('FCMToken'));
-  //       fd.append( 'device_type', 'web');
 
-  //       try{
-  //         const res = await this.$store.dispatch('auth/login', fd)
-  //           if( res.success == true ){
-  //               this.$toast.add({ severity: 'success', summary: res.message, life: 3000 });
-  //               this.disabled = false ;
-  //               this.spinner = false ;
-  //               setTimeout(() => {
-  //                 this.$router.push('/');
-  //               }, 3000);
-  //           }else{
-  //               this.$toast.add({ severity: 'error', summary: res.message, life: 3000 });
-  //               this.disabled = false ;
-  //               this.spinner = false ;
-  //           }
-  //       }catch(err){
-  //         console.error(`login error is ${err}`)
-  //       }
-  //     },
+    },
+    // mounted(){
+    //   // this.getCountries();
+    //   document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
 
-  //     // valid phone
-  //     showValid(){
-  //       let phoneToString = this.phone.toString();
-  //       // submit button check
-  //       if( this.phone == '' || phoneToString.length < 9  || this.password == ''){
-  //         this.disabled = true ;
-  //       }else{
-  //         this.disabled = false ;
-  //       }
-  //       // phone length check
-  //       if(phoneToString.length < 9){
-  //         this.lengthValid = true;
-  //       }else{
-  //         this.lengthValid = false;
-  //       }
-  //       // phone required check
-  //       if(this.phone == ''){
-  //         this.required = true ;
-  //       }else{
-  //         this.required = false ;
-  //       }
-  //       // password required check
-  //       if( this.password == '' ){
-  //         this.passwordRequied = true ;
-  //       }else{
-  //         this.passwordRequied = false ;
-  //       }
-  //     },
-  //     chooseCountry(){
-  //       document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
-  //     },
+    //   fetch('https://api.ipify.org?format=json')
+    //   .then(response => response.json())
+    //   .then(data => localStorage.setItem('device_id', data.ip))
+    //   .catch(error => console.error(error));
 
-  //   },
-  //   mounted(){
-  //     // this.getCountries();
-  //     document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
+    // },
 
-  //     fetch('https://api.ipify.org?format=json')
-  //     .then(response => response.json())
-  //     .then(data => localStorage.setItem('device_id', data.ip))
-  //     .catch(error => console.error(error));
-
-  //   },
-
-  //   created(){
-  //     this.getCountries();
-  //   }
+    created(){
+      // this.getCountries();
+    }
 };
 </script>
 
-<style scoped>
+<style  lang="scss">
+.chooseLogin{
+  button{
+    svg{
+      font-size: 25px;
+    }
+    width: 100%;
+    margin: auto;
+    display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+  }
+    .phone , .whatsApp{
+      width: 50%;
+      margin: auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px 7px;
+    }
+    .whatsApp{
+      background-color: #4EB727;
+    }
+    .phone{
+      background-color: #419897;
+    }
+}
 .p-dropdown {
   width: 25%;
   top: 32px !important;

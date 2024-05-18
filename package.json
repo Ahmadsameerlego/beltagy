@@ -17,6 +17,7 @@
     "axios": "^1.2.3",
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
+    "moment": "^2.30.1",
     "popper.js": "^1.16.1",
     "primevue": "^3.29.2",
     "swiper": "^11.0.7",
