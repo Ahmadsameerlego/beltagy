@@ -19,19 +19,19 @@
         <div class="question-number fw-6">
           السؤال رقم {{ currentQuestionIndex + 1 }}
         </div>
-        <p class="question-text">
-          {{ currentQuestion.text }}
+        <p class="question-text text-white">
+          {{ currentQuestion.question }}
         </p>
 
         <div class="options flex_between">
           <label
-            v-for="(option, oIndex) in currentQuestion.options"
+            v-for="(option, oIndex) in currentQuestion.answers"
             :key="oIndex"
             class="option-container d-flex flex-column justify-content-center align-items-center"
           >
             <input
               type="radio"
-              :value="option"
+              :value="option.answer"
               :name="'question_' + currentQuestionIndex"
               v-model="selectedOption"
               :disabled="submitted"
@@ -40,22 +40,21 @@
 
             <div>
               <img
-                :src="currentQuestion.images[oIndex]"
+                :src="option.image"
                 alt="option image"
                 v-if="currentQuestion.images && currentQuestion.images[oIndex]"
                 class="option-image"
               />
             </div>
             <div class="fw-6 fs-18">
-              {{ option }}
+              {{ option.answer }}
             </div>
-
             <span
               v-if="
                 submitted &&
                 isCorrect &&
-                selectedOption === currentQuestion.answer &&
-                selectedOption === option
+                selectedOption === currentQuestion.true_answer &&
+                selectedOption === option.answer
               "
               class="correct-label"
             >
@@ -63,7 +62,7 @@
               <i class="fa-solid fa-square-check"></i>
             </span>
             <span
-              v-if="submitted && !isCorrect && selectedOption === option"
+              v-if="submitted && !isCorrect && selectedOption === option.answer"
               class="wrong-label"
             >
               <span class="mx-1"> اجابة خاطئة </span>
@@ -104,6 +103,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -160,7 +160,7 @@ export default {
     score() {
       let correct = 0;
       for (let i = 0; i < this.quiz.questions.length; i++) {
-        if (this.selectedOptions[i] === this.quiz.questions[i].answer) {
+        if (this.selectedOptions[i] === this.quiz.questions[i].true_answer) {
           correct++;
         }
       }
@@ -187,10 +187,32 @@ export default {
       this.currentQuestionIndex = index;
       this.resetSubmission();
     },
-    submitAnswer() {
-      this.submitted = true;
-      this.selectedOptions[this.currentQuestionIndex] = this.selectedOption; // Save selected option for current question
-      this.isCorrect = this.selectedOption === this.currentQuestion.answer;
+    async submitAnswer() {
+      
+
+      const fd = new FormData();
+      fd.append('question_id', this.currentQuestion.id)
+      fd.append('answer', this.selectedOption)
+      fd.append('group_name', 'session_test')
+
+       const token = localStorage.getItem('token');
+        const headers = {
+            Authorization: `Bearer ${token}`,
+      };
+
+       await axios.post('answer-question', fd, {headers})
+      .then( (res)=>{
+          if( res.data.key == 'success' ){
+            this.$toast.add({ severity: 'success', summary: res.data.msg, life: 3000 });
+              setTimeout(() => {
+                this.submitted = true;
+                this.selectedOptions[this.currentQuestionIndex] = this.selectedOption;
+                this.isCorrect = this.selectedOption === this.currentQuestion.true_answer;
+              }, 1000);
+          }else{
+              this.$toast.add({ severity: 'error', summary: res.data.msg, life: 3000 });
+          }
+      } )
     },
     resetSubmission() {
       this.submitted = false;
@@ -198,11 +220,31 @@ export default {
       this.selectedOption =
         this.selectedOptions[this.currentQuestionIndex] || null; // Restore selected option for current question if available
     },
-    submitQuiz() {
+    async submitQuiz() {
       // Perform final submission actions here
       this.quizCompleted = true;
+      const fd = new FormData();
+      fd.append()
     },
+
+
+    // get questions 
+    async getQuestions() {
+      await axios.get(`session-questions?session_id=${this.$route.params.id}`, {
+        headers: {
+          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
+        }
+      })
+        .then((res) => {
+          if (res.data.key === 'success') {
+            this.quiz.questions = res.data.data.questions;
+          }
+      } )
+    }
   },
+  mounted() {
+    this.getQuestions();
+  }
 };
 </script>
 

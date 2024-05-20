@@ -21,13 +21,13 @@
 
                   <div class="flex_column">
                     <div class="mb-2">
-                      <router-link to="/month/1" class="border-btn d-block">
+                      <router-link :to="'/month/'+course.id" class="border-btn d-block">
                         الدخول للكورس</router-link
                       >
                     </div>
                     <div>
-                      <router-link :to="'/month/'+course.id" class="main_btn d-block px-4">
-                        اشترك الان</router-link
+                      <button @click="payCourse(course.id)" class="main_btn d-block px-4">
+                        اشترك الان</button
                       >
                     </div>
                   </div>
@@ -53,17 +53,24 @@
       </section>
     </div>
   </div>
+
+  <Dialog v-model:visible="visible"  :style="{ width: '50rem' }" style="z-index:99999">
+       <iframe :src="url" class="w-100" height="600" frameborder="0" allowfullscreen></iframe>
+</Dialog>
 </template>
 
 <script>
 import axios from 'axios';
+import Dialog from 'primevue/dialog';
 
 export default {
   name: "CoursesBestCourses",
 
   data() {
     return {
-            courses: [],
+      courses: [],
+      url: '',
+            visible : false
     };
   },
 
@@ -81,12 +88,31 @@ export default {
         .then((res) => {
           if (res.data.key === 'success') {
             this.courses = res.data.data.results;
-          } else if (res.data.key === 'needApprove') {
-            this.isActived = true;
-          }
+          } 
+      } )
+    },
+
+    // pay course 
+    async payCourse(id) {
+      const fd = new FormData();
+      await axios.post(`pay-course/${id}`, fd ,{
+        headers: {
+          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
+        }
+      })
+        .then((res) => {
+          if (res.data.key === 'success') {
+            this.visible = true;
+            setTimeout(() => {
+              this.url = res.data.data.url;
+            }, 1000);
+          } 
       } )
     }
   },
+  components: {
+    Dialog
+  }
 };
 </script>
 
@@ -135,7 +161,7 @@ export default {
     border-radius: 10px;
     margin-top: -80px;
     background-color: #fff;
-    z-index: 99999;
+    z-index: 1;
     position: relative;
   }
 }

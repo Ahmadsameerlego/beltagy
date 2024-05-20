@@ -55,12 +55,12 @@
           </router-link> -->
           <!-- alert  -->
           <router-link
-            to="/notificationPage"
+            to="/notification"
             class="alert flex_center mb-0 mx-4 position-relative"
             v-if="isLoggedIn"
           >
             <i class="fa-regular fa-bell"></i>
-            <span class="not_count"> 2 </span>
+            <span class="not_count" v-if="count>0"> {{  count  }} </span>
           </router-link>
 
           <!-- messages  -->
@@ -167,19 +167,19 @@ export default {
         Toast
     },
     methods:{
-//         // get notfication counter
-//         async getNotCounter(){
-//             const token = localStorage.getItem('token');
-//             const headers = {
-//                 Authorization: `Bearer ${token}`,
-//             };
-//             await axios.get('user/notifications/count', {headers})
-//             .then( (res)=>{
-//                 if( res.data.key === 'success' ){
-//                     this.count = res.data.data.count ;
-//                 }
-//             })
-//         },
+        // get notfication counter
+        async getNotCounter(){
+            const token = localStorage.getItem('token');
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            await axios.get('count-notifications', {headers})
+            .then( (res)=>{
+                if( res.data.key === 'success' ){
+                    this.count = res.data.data.count ;
+                }
+            })
+        },
 
 //         // sign out
         async signOut(){
@@ -212,7 +212,7 @@ export default {
         if( localStorage.getItem('user') ){
             this.username = JSON.parse(localStorage.getItem('user')).name ;
         }
-        // this.getNotCounter();
+        this.getNotCounter();
     },
 //     beforeUnmount(){
 //         // window.addEventListener('click', this.closeNavbarOnClickOutside);

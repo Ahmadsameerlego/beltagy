@@ -10,7 +10,8 @@ import changePassword from "../views/changePassword.vue";
 import orders from "../views/ordersView.vue";
 import termsCondition from "../views/termsConditions.vue";
 import contact from "../views/contactUs.vue";
-import quiz from "../views/quizView.vue"
+import quiz from "../views/quizView.vue";
+import notification from '../views/notificationsView.vue'
 const routes = [
   {
     path: "/",
@@ -60,6 +61,10 @@ const routes = [
   {
     path: "/quiz/:id",
     component: quiz,
+  },
+  {
+    path: "/notification",
+    component: notification,
   },
 ];
 
