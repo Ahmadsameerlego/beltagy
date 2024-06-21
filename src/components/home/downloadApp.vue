@@ -7,11 +7,11 @@
           <p class="whiteColor down_desc">حمل التطبيق</p>
 
           <div class="d-flex mt-5">
-            <a href="google_play_link" target="_blank" class="downloadIcon">
+            <a href="https://play.google.com/store/apps/details?id=com.edu.beltagy" target="_blank" class="downloadIcon">
               <img :src="require('@/assets/imgs/googlePlay.png')" alt="" />
             </a>
 
-            <a href="app_store_link" target="_blank" class="downloadIcon mx-3">
+            <a href="https://apps.apple.com/eg/app/3mo-elbeltagy/id6469101660" target="_blank" class="downloadIcon mx-3">
               <img :src="require('@/assets/imgs/appStore.png')" alt="" />
             </a>
           </div>

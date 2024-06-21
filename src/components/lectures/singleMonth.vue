@@ -2,211 +2,242 @@
   <div class="all-lectures mt-5 mb-5">
     <!-- <h6 class="fw-bold text-center mb-4 mainColor">محاضرات شهر مارس</h6> -->
     <div class="container">
-      
       <div v-if="!isVidoShow" class="mb-5">
         <div class="video-conatiner w-100">
-         <iframe
-          :src="embeddedVideoSrc"
-          height="300"
-          class="w-100"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+          <iframe
+            :src="embeddedVideoSrc"
+            height="300"
+            class="w-100"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          >
+          </iframe>
         </div>
       </div>
 
       <h4 class="fw-bold text-center mb-3">
         محتوى
-        <span class="" style="color:#a79483"> الكورس </span>
+        <span class="" style="color: #a79483"> الكورس </span>
       </h4>
 
       <div class="row">
         <div class="col-md-12">
-             <div class="card mb-3" >
-        <Accordion  >
-          <AccordionTab v-for="(session, index) in sessions" :key="index"  @originalEvent="getSessionDetails(session.id)">
-            <template #header>
-              <div
-                class="d-flex align-item-center justify-content-between w-100 singleMonthCard"
-              >
-                <div class="d-flex align-items-center">
-                  <div class="lesson-image">
-                    <img :src="session.image" alt="" />
-                  </div>
-                 <div class="mx-3">
-                   <div>
-                    <span class="mx-3"> {{  session.name  }} </span>
-                  </div>
-                  <p>
-                    {{  session.description  }}
-                  </p>
-                 </div>
-                </div>
-                <div class="d-flex flex-column">
-                  <span class="lesson-price mx-4 mb-2"> {{  session.price  }} جنية </span>
-                  <button class="main_btn lesson_btn" @click="payCourse(session.id)">اشترك الان</button>
-                </div>
-              </div>
-            </template>
-            <div class="card">
-              <Accordion>
-                <!-- شيت  -->
-                <AccordionTab>
-                  <template #header>
-                    <span class="d-flex align-items-center gap-2 w-full">
-                      <span class="lesson-name"> شيت على اللي فات </span>
-                      <span class="lesson-finished mx-3">
-                        <i class="fa-solid fa-circle-check"></i>
-                      </span>
-                    </span>
-                  </template>
-
-                  <div class="go-quiz">
-                    <router-link :to="'/quiz/'+session.id"> الذهاب لصفحة الشيت </router-link>
-                  </div>
-                </AccordionTab>
-                <!-- فيديو  -->
-                <AccordionTab>
-                  <template #header>
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2 w-full">
-                        <span class="lesson-name">محتوى الحصة (الفيديو الاول) </span>
-                        <span class="lesson-opened mx-3">
-                          <i class="fa-solid fa-lock-open"></i>
-                        </span>
-                      </div>
-                     <div>
-                       <countDownTimerVue
-                        :days="session.num_available_days"
-                        :hours="5"
-                        :minutes="30"
-                        :seconds="10"
-                      />
-                      <div
-                        style="margin-right: 50px"
-                        class="d-flex align-items-center"
-                      >
-                        <div>
-                          <span class="whiteColor">
-                            الحصة بتاعتك اتوقفت عشان انت راكمت
-                          </span>
+          <div class="card mb-3">
+            <Accordion>
+              <AccordionTab v-for="(session, index) in sessions" :key="index">
+                <template #header>
+                  
+                    <div
+                      class="d-flex align-item-center justify-content-between w-100 singleMonthCard"
+                    >
+                      <router-link
+                    :to="'/details/'+session.id"
+                    class="w-100"
+                    style="color: #fff"
+                  >
+                      <div class="d-flex align-items-center">
+                        <div class="lesson-image">
+                          <img :src="session.image" alt="" />
                         </div>
                         <div class="mx-3">
-                          <button class="btn call-us">
-                            كلمنا ع الدعم
-                            <i class="fa-solid fa-phone"></i>
-                          </button>
+                          <div>
+                            <span class="mx-3"> {{ session.name }} </span>
+                          </div>
+                          <p>
+                            {{ session.description }}
+                          </p>
                         </div>
                       </div>
-                     </div>
-                    </div>
-                  </template>
-                  <div class="go-quiz">
-                    <button class="main_btn" @click="showVideo(session.video1)">
-                      مشاهدة الحصة
-                    </button>
-                  </div>
-                </AccordionTab>
-                <!-- quiz  -->
-                <AccordionTab>
-                  <template #header>
-                    <div class="d-flex">
-                      <div
-                        class="d-flex align-items-center gap-2 w-full closed-tab"
-                      >
-                        <span class="lesson-name">كويز </span>
-                        <span class="lesson-closed mx-3">
-                          <i class="fa-solid fa-circle-xmark"></i>
+                      </router-link>
+                      <div v-if="session.is_paid==false" class="d-flex flex-column">
+                        <span class="lesson-price mx-4 mb-2">
+                          {{ session.price }} جنية
                         </span>
+                        <button
+                          class="main_btn lesson_btn"
+                          @click.stop="payCourse(session.id)"
+                        >
+                          اشترك الان
+                        </button>
                       </div>
-
-                      
                     </div>
-                  </template>
-
-                  <div class="go-quiz">
-                    <router-link to="/quiz/1">
-                      الذهاب لصفحة الكويز
-                    </router-link>
-                  </div>
-                </AccordionTab>
-                <!-- فدييو  -->
-                <AccordionTab>
-                 <template #header>
-                    <div class="d-flex">
-                      <div class="d-flex align-items-center gap-2 w-full">
-                        <span class="lesson-name">محتوى الحصة (الفيديو الثاني) </span>
-                        <span class="lesson-opened mx-3">
-                          <i class="fa-solid fa-lock-open"></i>
+                  <!-- </router-link> -->
+                </template>
+                <div class="card">
+                  <Accordion>
+                    <!-- شيت  -->
+                    <AccordionTab>
+                      <template #header>
+                        <span class="d-flex align-items-center gap-2 w-full">
+                          <span class="lesson-name"> شيت على اللي فات </span>
+                          <span class="lesson-finished mx-3">
+                            <i class="fa-solid fa-circle-check"></i>
+                          </span>
                         </span>
-                      </div>
-                      <countDownTimerVue
-                        :days="session.num_available_days"
-                        :hours="5"
-                        :minutes="30"
-                        :seconds="10"
-                      />
-                    </div>
-                  </template>
-                  <div class="go-quiz">
-                    <button class="main_btn" @click="showVideo(session.video2)">
-                      مشاهدة الحصة
-                    </button>
-                  </div>
-                </AccordionTab>
-                <AccordionTab :disabled="true">
-                  <template #header>
-                    <div class="d-flex align-items-center gap-2 w-full">
-                      <span class="lesson-name">الواجب </span>
-                      <span class="lesson-notOpen mx-3">
-                        <i class="fa-solid fa-lock"></i>
-                      </span>
-                    </div>
-                  </template>
-                  <p class="m-0">
-                    At vero eos et accusamus et iusto odio dignissimos ducimus
-                    qui blanditiis praesentium voluptatum deleniti atque
-                    corrupti quos dolores et quas molestias excepturi sint
-                    occaecati cupiditate non provident, similique sunt in culpa
-                    qui officia deserunt mollitia animi, id est laborum et
-                    dolorum fuga. Et harum quidem rerum facilis est et expedita
-                    distinctio. Nam libero tempore, cum soluta nobis est
-                    eligendi optio cumque nihil impedit quo minus.
-                  </p>
-                </AccordionTab>
-                <AccordionTab :disabled="true">
-                  <template #header>
-                    <div class="d-flex align-items-center gap-2 w-full">
-                      <span class="lesson-name">امتحان على اخر الباب </span>
-                      <span class="lesson-notOpen mx-3">
-                        <i class="fa-solid fa-lock"></i>
-                      </span>
-                    </div>
-                  </template>
+                      </template>
 
-                  <div class="quiz-container">
-                    <quiz />
-                  </div>
-                </AccordionTab>
-              </Accordion>
-            </div>
-          </AccordionTab>
-        </Accordion>
-      </div>
+                      <div class="go-quiz">
+                        <router-link :to="'/quiz/' + session.id">
+                          الذهاب لصفحة الشيت
+                        </router-link>
+                      </div>
+                    </AccordionTab>
+                    <!-- فيديو  -->
+                    <AccordionTab>
+                      <template #header>
+                        <div class="d-flex">
+                          <div class="d-flex align-items-center gap-2 w-full">
+                            <span class="lesson-name"
+                              >محتوى الحصة (الفيديو الاول)
+                            </span>
+                            <span class="lesson-opened mx-3">
+                              <i class="fa-solid fa-lock-open"></i>
+                            </span>
+                          </div>
+                          <div>
+                            <countDownTimerVue
+                              :days="session.num_available_days"
+                              :hours="5"
+                              :minutes="30"
+                              :seconds="10"
+                            />
+                            <div
+                              style="margin-right: 50px"
+                              class="Closed-Sess d-flex align-items-center"
+                            >
+                              <div>
+                                <span class="whiteColor">
+                                  الحصة بتاعتك اتوقفت عشان انت راكمت
+                                </span>
+                              </div>
+                              <div class="mx-3">
+                                <button class="btn call-us">
+                                  كلمنا ع الدعم
+                                  <i class="fa-solid fa-phone"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                      <div class="go-quiz">
+                        <button
+                          class="main_btn"
+                          @click="showVideo(session.video1)"
+                        >
+                          مشاهدة الحصة
+                        </button>
+                      </div>
+                    </AccordionTab>
+                    <!-- quiz  -->
+                    <AccordionTab>
+                      <template #header>
+                        <div class="d-flex">
+                          <div
+                            class="d-flex align-items-center gap-2 w-full closed-tab"
+                          >
+                            <span class="lesson-name">كويز </span>
+                            <span class="lesson-closed mx-3">
+                              <i class="fa-solid fa-circle-xmark"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </template>
+
+                      <div class="go-quiz">
+                        <router-link to="/quiz/1">
+                          الذهاب لصفحة الكويز
+                        </router-link>
+                      </div>
+                    </AccordionTab>
+                    <!-- فدييو  -->
+                    <AccordionTab>
+                      <template #header>
+                        <div class="d-flex">
+                          <div class="d-flex align-items-center gap-2 w-full">
+                            <span class="lesson-name"
+                              >محتوى الحصة (الفيديو الثاني)
+                            </span>
+                            <span class="lesson-opened mx-3">
+                              <i class="fa-solid fa-lock-open"></i>
+                            </span>
+                          </div>
+                          <countDownTimerVue
+                            :days="session.num_available_days"
+                            :hours="5"
+                            :minutes="30"
+                            :seconds="10"
+                          />
+                        </div>
+                      </template>
+                      <div class="go-quiz">
+                        <button
+                          class="main_btn"
+                          @click="showVideo(session.video2)"
+                        >
+                          مشاهدة الحصة
+                        </button>
+                      </div>
+                    </AccordionTab>
+                    <AccordionTab :disabled="true">
+                      <template #header>
+                        <div class="d-flex align-items-center gap-2 w-full">
+                          <span class="lesson-name">الواجب </span>
+                          <span class="lesson-notOpen mx-3">
+                            <i class="fa-solid fa-lock"></i>
+                          </span>
+                        </div>
+                      </template>
+                      <p class="m-0">
+                        At vero eos et accusamus et iusto odio dignissimos
+                        ducimus qui blanditiis praesentium voluptatum deleniti
+                        atque corrupti quos dolores et quas molestias excepturi
+                        sint occaecati cupiditate non provident, similique sunt
+                        in culpa qui officia deserunt mollitia animi, id est
+                        laborum et dolorum fuga. Et harum quidem rerum facilis
+                        est et expedita distinctio. Nam libero tempore, cum
+                        soluta nobis est eligendi optio cumque nihil impedit quo
+                        minus.
+                      </p>
+                    </AccordionTab>
+                    <AccordionTab :disabled="true">
+                      <template #header>
+                        <div class="d-flex align-items-center gap-2 w-full">
+                          <span class="lesson-name">امتحان على اخر الباب </span>
+                          <span class="lesson-notOpen mx-3">
+                            <i class="fa-solid fa-lock"></i>
+                          </span>
+                        </div>
+                      </template>
+
+                      <div class="quiz-container">
+                        <quiz />
+                      </div>
+                    </AccordionTab>
+                  </Accordion>
+                </div>
+              </AccordionTab>
+            </Accordion>
+          </div>
         </div>
-       
       </div>
-
-
-      
-   
     </div>
   </div>
 
-   <Dialog v-model:visible="visible"  :style="{ width: '50rem' }" style="z-index:99999">
-       <iframe :src="url" class="w-100" height="600" frameborder="0" allowfullscreen></iframe>
-</Dialog>
+  <Dialog
+    v-model:visible="visible"
+    :style="{ width: '50rem' }"
+    style="z-index: 99999"
+  >
+    <iframe
+      :src="url"
+      class="w-100"
+      height="600"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
+  </Dialog>
 </template>
 
 <script>
@@ -215,7 +246,7 @@ import AccordionTab from "primevue/accordiontab";
 import quiz from "@/components/quiz/quizComponent.vue";
 import countDownTimerVue from "./countDownTimer.vue";
 import axios from "axios";
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 
 export default {
   name: "CoursesSingleMonth",
@@ -248,9 +279,9 @@ export default {
       isVidoShow: true,
       course: {},
       sessions: [],
-      videoSrc: '',
-        url: '',
-            visible : false
+      videoSrc: "",
+      url: "",
+      visible: false,
       // end quiz
 
       // start video
@@ -268,9 +299,9 @@ export default {
       return correct;
     },
     embeddedVideoSrc() {
-      const videoId = this.videoSrc.split('youtu.be/')[1].split('?')[0];
+      const videoId = this.videoSrc.split("youtu.be/")[1].split("?")[0];
       return `https://www.youtube.com/embed/${videoId}`;
-    }
+    },
   },
 
   mounted() {
@@ -284,66 +315,76 @@ export default {
     },
     showVideo(videoSrc) {
       this.isVidoShow = false;
-      this.videoSrc = videoSrc
+      this.videoSrc = videoSrc;
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
     },
-    async getSessionDetails(id) { 
-      console.log('fffffffffffffffffff')
-      await axios.get(`session-details/${id}`, {
-        headers: {
-          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
-        }
-      })
+    async getSessionDetails(id) {
+      console.log("fffffffffffffffffff");
+      await axios
+        .get(`session-details/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((res) => {
-          if (res.data.key === 'success') {
+          if (res.data.key === "success") {
             this.course = res.data.data;
           }
-      } )
+        });
     },
     async getSessions() {
-      await axios.get(`sessions`, {
-        headers: {
-          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
-        }
-      })
+      await axios
+        .get(`sessions`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((res) => {
-          if (res.data.key === 'success') {
+          if (res.data.key === "success") {
             this.sessions = res.data.data.data;
           }
-      } )
+        });
     },
-     // pay course 
+    // pay course
     async payCourse(id) {
       const fd = new FormData();
-      await axios.post(`pay-session/${id}`, fd ,{
-        headers: {
-          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
-        }
-      })
+      await axios
+        .post(`pay-session/${id}`, fd, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((res) => {
-          if (res.data.key === 'success') {
+          if (res.data.key === "success") {
             this.visible = true;
             setTimeout(() => {
               this.url = res.data.data.url;
             }, 1000);
-          } 
-      } )
-    }
+          }
+        });
+    },
   },
   components: {
     Accordion,
     AccordionTab,
     quiz,
     countDownTimerVue,
-    Dialog
+    Dialog,
   },
 };
 </script>
 
 <style lang="scss">
+.acc-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+}
 .go-quiz {
   display: flex;
   justify-content: center;
@@ -507,5 +548,4 @@ export default {
 .options {
   margin-top: 10px;
 }
-
 </style>

@@ -5,8 +5,13 @@
       <p class="text-center fw-bold fs-19 mt-3">
         يمكنك الاطلاع على جميع محاضرات الشهور من هنا
       </p>
-      <section class="lectures mt-5">
-        <div class="row">
+       <Message severity="info" v-if="!needApprove==false">
+            <span style="color:#fff">
+              هذا الحساب معلق حاليا برجاء التواصل مع الادارة
+            </span>
+          </Message>
+      <section class="lectures mt-5" v-else>
+        <div class="row" v-if="courses.length > 0">
            <div class="col-md-4" v-for="course in courses" :key="course.id">
             <div class="singel-lecture">
               <div class="lec-image">
@@ -50,7 +55,13 @@
             </div>
           </div>
         </div>
+         <Message v-else severity="error">
+            <span style="color:#fff">
+              برجاء تسجيل الدخول لمشاهدة الكورسات
+            </span>
+          </Message>
       </section>
+      
     </div>
   </div>
 
@@ -62,6 +73,7 @@
 <script>
 import axios from 'axios';
 import Dialog from 'primevue/dialog';
+import Message from 'primevue/message';
 
 export default {
   name: "CoursesBestCourses",
@@ -70,7 +82,8 @@ export default {
     return {
       courses: [],
       url: '',
-            visible : false
+      visible: false,
+            needApprove  : false
     };
   },
 
@@ -88,7 +101,9 @@ export default {
         .then((res) => {
           if (res.data.key === 'success') {
             this.courses = res.data.data.results;
-          } 
+          } else if (res.data.key === 'needApprove') {
+            this.needApprove = true;
+          }
       } )
     },
 
@@ -111,7 +126,8 @@ export default {
     }
   },
   components: {
-    Dialog
+    Dialog,
+    Message
   }
 };
 </script>

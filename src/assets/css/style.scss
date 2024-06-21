@@ -270,3 +270,15 @@ $main-color2: #6D98DB   ;
     flex-direction: column !important   ;
 }
 }
+@media(max-width:768px){
+    .sessionConent{
+        flex-direction: column;
+    }
+    .loginSection .row{
+        width: 100% !important;
+    }
+    #header .navbar a{font-size: 14px !important;}
+}
+.p-message-wrapper{
+    justify-content: space-between;
+}

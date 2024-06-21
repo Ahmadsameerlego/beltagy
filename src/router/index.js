@@ -12,7 +12,18 @@ import termsCondition from "../views/termsConditions.vue";
 import contact from "../views/contactUs.vue";
 import quiz from "../views/quizView.vue";
 import notification from '../views/notificationsView.vue'
+import details from '../views/sessionDetails.vue'
+import privacy from '../views/privacyPolicy.vue'
 const routes = [
+  {
+    path: "/privacy",
+    component: privacy, 
+    
+  },
+  {
+    path: "/details/:id",
+    component: details,
+  },
   {
     path: "/",
     name: "home",

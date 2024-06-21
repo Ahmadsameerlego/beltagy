@@ -30,8 +30,8 @@
                   </router-link>
                 </li>
                 <li>
-                  <router-link to="/contact">
-                    <div class="my-l">تواصل معنا</div>
+                  <router-link to="/privacy">
+                    <div class="my-l"> الخصوصية</div>
                   </router-link>
                 </li>
               </ul>
@@ -88,7 +88,7 @@
             target="_blank"
             style="color: inherit"
           >
-            تصميم بواسطة Ahmed Samir
+            تنفيذ بواسطة Ahmed Samir
           </a>
           <!-- <img class="awamerLogo" :src="require('@/assets/imgs/awamrtlogo.jpeg')" alt=""> -->
         </div>

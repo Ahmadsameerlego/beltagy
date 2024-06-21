@@ -45,9 +45,9 @@ export default {
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
-            await axios.get('terms', {headers})
+            await axios.get('privacy', {headers})
             .then( (res)=>{
-                this.terms = res.data.data.terms
+                this.terms = res.data.data.privacy
             } )
         }
     },

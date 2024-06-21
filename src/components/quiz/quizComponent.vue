@@ -1,6 +1,7 @@
 <template>
   <div class="container mt-5 mb-5">
-    <div v-if="!quizCompleted">
+   <section v-if="key!=='fail'">
+     <div v-if="!quizCompleted">
       <h3 class="mainColor text-center mb-4 fw-bold">{{ quiz.title }}</h3>
 
       <div class="navigation flex_center">
@@ -99,11 +100,19 @@
       <h3 class="text-center mainColor">اكتمل الكويز</h3>
       <p class="final-score fw-6 text-center">درجتك النهائية: {{ score }}</p>
     </div>
+   </section>
+   <div v-else>
+    <Message severity="warn">
+                لم تتم اضافة اسئلة بعد لهذا الدرس
+            </Message>
+   </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Message from 'primevue/message';
+
 export default {
   data() {
     return {
@@ -145,6 +154,7 @@ export default {
           },
         ],
       },
+      key : '',
       selectedOption: null,
       selectedOptions: [], // Add selectedOptions array
       currentQuestionIndex: 0,
@@ -194,6 +204,7 @@ export default {
       fd.append('question_id', this.currentQuestion.id)
       fd.append('answer', this.selectedOption)
       fd.append('group_name', 'session_test')
+      fd.append('type', sessionStorage.getItem('type'))
 
        const token = localStorage.getItem('token');
         const headers = {
@@ -236,6 +247,8 @@ export default {
         }
       })
         .then((res) => {
+                      this.key = res.data.key;
+
           if (res.data.key === 'success') {
             this.quiz.questions = res.data.data.questions;
           }
@@ -244,6 +257,9 @@ export default {
   },
   mounted() {
     this.getQuestions();
+  },
+  components: {
+    Message
   }
 };
 </script>

@@ -32,8 +32,8 @@
             </li> -->
 
             <li class="nav-item">
-              <router-link class="nav-link fw-bold" to="/termsCondition">
-                الشروط والاحكام
+              <router-link class="nav-link fw-bold" to="/contact">
+                الشكاوي والمقترحات
               </router-link>
             </li>
           </ul>
@@ -117,12 +117,23 @@
               <li class="mb-3">
                 <router-link
                   class="dropdown-item d-flex justify-content-start align-items-center"
-                  to="/orders"
+                  to="/termsCondition"
                 >
                   <span class="profile_icon flex_center">
                     <i class="fa-solid fa-bag-shopping"></i>
                   </span>
-                  <span class="mx-2 fw-6"> طلباتك </span>
+                  <span class="mx-2 fw-6"> الشروط والاحكام </span>
+                </router-link>
+              </li>
+              <li class="mb-3">
+                <router-link
+                  class="dropdown-item d-flex justify-content-start align-items-center"
+                  to="/privacy"
+                >
+                  <span class="profile_icon flex_center">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                  </span>
+                  <span class="mx-2 fw-6"> سياسة الخصوصية </span>
                 </router-link>
               </li>
 

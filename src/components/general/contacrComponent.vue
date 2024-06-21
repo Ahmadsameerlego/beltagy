@@ -11,7 +11,7 @@
       <p class="fw-bold fs-16">لا تتردد في التواصل معنا</p>
 
       <form class="flex flex-wrap gap-3 p-fluid" @submit.prevent="sendMessage">
-        <div class="row">
+        <div class="row align-items-center">
           <div class="col-md-6 mb-2">
             <div class="row">
               <div class="col-md-6 mb-2">
@@ -58,12 +58,12 @@
                   </div>
 
                   <!-- select phone  -->
-                  <Dropdown
+                  <!-- <Dropdown
                     v-model="selectedCity"
                     optionLabel="key"
                     class="w-full md:w-14rem"
                     @change="chooseCountry"
-                  />
+                  /> -->
                 </div>
               </div>
 
@@ -103,7 +103,7 @@
             <div class="job_image">
               <img
                 class="w-100 h-100 lazy"
-                :src="require('@/assets/imgs/contactSvg.png')"
+                :src="require('@/assets/imgs/login-removebg-preview.png')"
                 alt="contact canvas"
               />
             </div>
@@ -118,9 +118,10 @@
 <script>
 import InputText from "primevue/inputtext";
 // import InputNumber from 'primevue/inputnumber';
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
+import axios from "axios";
 // import { mapActions, mapState } from 'vuex';
 export default {
   data() {
@@ -139,45 +140,57 @@ export default {
   components: {
     InputText,
     // InputNumber,
-    Dropdown,
+    // Dropdown,
     Textarea,
     Toast,
   },
   // computed:{
   //     ...mapState(["common"])
   // },
-  // methods:{
-  // //   ...mapActions('common',['getCountries']),
+  methods:{
+  //   ...mapActions('common',['getCountries']),
 
-  //   async sendMessage(){
-  //     this.disabled = true ;
-  //     const fd = new FormData();
-  //     fd.append('phone', this.phone);
-  //     fd.append('user_name', this.user_name);
-  //     fd.append('complaint', this.complaint);
-  //     fd.append('country_code', this.selectedCity.key.replace(/\+/g, ''));
+    async sendMessage(){
+      this.disabled = true ;
+      const fd = new FormData();
+      fd.append('phone', this.phone);
+      fd.append('user_name', this.user_name);
+      fd.append('complaint', this.complaint);
+      fd.append('country_code', this.selectedCity.key.replace(/\+/g, ''));
 
-  //     const res = await this.$store.dispatch('logic/sendCompaint', fd)
-  //     if( res.success == true ){
-  //         this.$toast.add({ severity: 'success', summary: res.message, life: 3000 });
-  //         this.disabled = false ;
-  //         setTimeout(() => {
-  //             this.open = false ;
-  //         }, 3000);
+      await axios.post('new-complaint', fd, {
+        headers: {
+          Authorization : `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then((res) => {
+          if (res.data.key === 'success') {
+           this.$toast.add({ severity: 'success', summary: res.data.msg, life: 3000 });
+          this.disabled = false ;
+          setTimeout(() => {
+              this.open = false ;
+          }, 3000);
 
-  //         this.phone = null ;
-  //         this.complaint = null ;
-  //         this.user_name = null ;
-  //     }else{
-  //         this.$toast.add({ severity: 'error', summary: res.message, life: 3000 });
-  //         this.disabled = false ;
-  //     }
-  //   },
+          this.phone = null ;
+          this.complaint = null ;
+          this.user_name = null ;
+          } else {
+                    this.$toast.add({ severity: 'error', summary: res.data.msg, life: 3000 });
+          this.disabled = false ;
+
+        }
+      } )
+      // // const res = await this.$store.dispatch('logic/sendCompaint', fd)
+      // if( res.success == true ){
+         
+      // }else{
+      // }
+    },
 
   //   chooseCountry(){
   //         document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
   //     },
-  // },
+  },
 
   // mounted(){
   //     document.querySelector('.p-dropdown-label').innerHTML = this.selectedCity.key ;
@@ -193,7 +206,7 @@ textarea,
   border: none !important;
 }
 .job_image {
-  height: 360px;
+  height: auto;
 }
 </style>
 
