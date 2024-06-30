@@ -29,7 +29,7 @@ dom.watch();
 import VOtpInput from "vue3-otp-input";
 // import axios
 import axios from "axios";
-axios.defaults.baseURL = "http://64.227.32.127/api/";
+axios.defaults.baseURL = "https://api.3moelbeltagy.com/api/";
 // axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.lang = localStorage.getItem("locale");

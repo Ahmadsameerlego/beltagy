@@ -218,12 +218,13 @@ export default {
     mounted(){
         // window.addEventListener('click', this.closeNavbarOnClickOutside);
         if( localStorage.getItem('token') ){
-            this.isLoggedIn = true ;
+          this.isLoggedIn = true;
+            this.getNotCounter();
         }
         if( localStorage.getItem('user') ){
             this.username = JSON.parse(localStorage.getItem('user')).name ;
         }
-        this.getNotCounter();
+        
     },
 //     beforeUnmount(){
 //         // window.addEventListener('click', this.closeNavbarOnClickOutside);
