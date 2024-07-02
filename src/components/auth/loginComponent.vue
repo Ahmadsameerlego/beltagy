@@ -114,7 +114,7 @@
       <contactProblem :openContactModal="openContactModal" /> -->
     </div>
   </section>
-  <sendOtp :openOtp="openOtp" :phone="phone" :type="type" :whatsCode="whatsCode" />
+  <sendOtp :openOtp="openOtp" :phone="phone" :type="type" :whatsCode="whatsCode"  />
   <Toast />
 </template>
 
@@ -133,7 +133,8 @@ export default {
       spinner: false,
       typedChoosen: true,
       type: '',
-        whatsCode : ''
+      whatsCode: '',
+        otp : ''
       
     };
   },
@@ -172,11 +173,13 @@ export default {
               // this.resendTime = true;
               if (this.type === 'whatsapp') {
                 this.whatsCode = res.data.data.Code;
+                this.otp = res.data.data.OTP;
                 setTimeout(() => {
-                  window.open(res.data.data.Clickable, '_blank');
+                  this.openPopup(res.data.data.Clickable);
                 }, 2000);
+
                 setTimeout(() => {
-                  this.openOtp = true;
+                  this.sendOtp();
                 }, 4000);
               } else {
                  setTimeout(() => {
@@ -192,6 +195,56 @@ export default {
             }
             this.spinner = false;
           });
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    openPopup(url) {
+      let popup = window.open("", "_blank");
+    popup.location.href = url;
+    },
+     async sendOtp() {
+        this.WhatsDisabled = true;
+      const fd = new FormData();
+      fd.append("phone", this.phone);
+      fd.append("device_id", localStorage.getItem("FCMToken"));
+      fd.append("device_type", "web");
+      fd.append("type", "sms");
+      fd.append("password", this.code);
+
+      // check if the function for the active code or check forget password code
+      if (localStorage.getItem("otpType") == "active") {
+        this.methodName = "auth/active";
+      } else if (localStorage.getItem("otpType") == "forget") {
+        this.methodName = "auth/forgetCode";
+      }
+
+      try {
+        await axios.get(`whatsapp-verify?OTP=${this.otp}&Mobile=${this.phone}`, fd).then((res) => {
+          if (res.data.key == "success") {
+            // this.$toast.add({
+            //   severity: "success",
+            //   summary: res.data.msg,
+            //   life: 3000,
+            // });
+        
+            localStorage.setItem('user' , JSON.stringify(res.data.data.user))
+              localStorage.setItem('token', res.data.data.user.token)
+            setTimeout(() => {
+                this.$router.push('/')
+            }, 2000);
+           
+          } else {
+            this.$toast.add({
+              severity: "error",
+              summary: res.data.msg,
+              life: 3000,
+            });
+           
+          }
+           this.WhatsDisabled = false;
+            this.spinner = false;
+        });
       } catch (err) {
         console.error(err);
       }

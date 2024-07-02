@@ -1,5 +1,5 @@
 <template>
-  <section id="downloadApp" class="mt-5">
+  <section id="downloadApp" class="mt-5" style="overflow:hidden">
     <div class="container">
       <div class="row">
         <div class="col-md-6 mb-2">
@@ -18,10 +18,20 @@
         </div>
 
         <div class="col-md-6">
-          <div class="downloadImage">
+          <div class="downloadImage d-flex justify-content-between">
             <img
-              class="w-100 h-100"
-              :src="require('@/assets/imgs/half_back.png')"
+              class="w-100 h-100 mx-2 down-image"
+              :src="require('@/assets/imgs/down1.png')"
+              alt=""
+            />
+            <img
+              class="w-100 h-100 mx-2 down-image"
+              :src="require('@/assets/imgs/down3.png')"
+              alt=""
+            />
+            <img
+              class="w-100 h-100 mx-2 down-image"
+              :src="require('@/assets/imgs/down2.png')"
               alt=""
             />
           </div>
@@ -47,6 +57,13 @@
 </script>
 
 <style lang="scss">
+.down-image{
+  transform: rotate(-30deg);
+  border-radius: 10px;
+}
+.downloadImage{
+  width : 200px ;
+}
 #downloadApp {
   background: linear-gradient(
     225deg,

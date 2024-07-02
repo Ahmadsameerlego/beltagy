@@ -160,7 +160,7 @@ export default {
         this.disabled = true;
       const fd = new FormData();
       fd.append("phone", this.phone);
-      fd.append("device_id", sessionStorage.getItem("device_id"));
+      fd.append("device_id", localStorage.getItem("FCMToken"));
       fd.append("device_type", "web");
       fd.append("type", "sms");
       fd.append("password", this.code);
@@ -200,52 +200,7 @@ export default {
       } catch (err) {
         console.error(err);
       }
-      } else {
-        this.WhatsDisabled = true;
-      const fd = new FormData();
-      fd.append("phone", this.phone);
-      fd.append("device_id", sessionStorage.getItem("device_id"));
-      fd.append("device_type", "web");
-      fd.append("type", "sms");
-      fd.append("password", this.code);
-
-      // check if the function for the active code or check forget password code
-      if (localStorage.getItem("otpType") == "active") {
-        this.methodName = "auth/active";
-      } else if (localStorage.getItem("otpType") == "forget") {
-        this.methodName = "auth/forgetCode";
-      }
-
-      try {
-        await axios.get(`whatsapp-verify?OTP=${this.whatsAppCode}&Mobile=${this.phone}`, fd).then((res) => {
-          if (res.data.key == "success") {
-            this.$toast.add({
-              severity: "success",
-              summary: res.data.msg,
-              life: 3000,
-            });
-        
-            localStorage.setItem('user' , JSON.stringify(res.data.data.user))
-              localStorage.setItem('token', res.data.data.user.token)
-            setTimeout(() => {
-                this.$router.push('/')
-            }, 2000);
-           
-          } else {
-            this.$toast.add({
-              severity: "error",
-              summary: res.data.msg,
-              life: 3000,
-            });
-           
-          }
-           this.WhatsDisabled = false;
-            this.spinner = false;
-        });
-      } catch (err) {
-        console.error(err);
-      }
-      }
+      } 
     },
     // resend code
     async resendCode() {

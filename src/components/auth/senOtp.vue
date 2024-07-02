@@ -144,7 +144,7 @@ export default {
       this.spinner = true;
       const fd = new FormData();
       fd.append("phone", sessionStorage.getItem("phone"));
-      fd.append("device_id", sessionStorage.getItem("device_id"));
+      fd.append("device_id", localStorage.getItem("FCMToken"));
       fd.append("device_type", "web");
       fd.append("code", this.code);
 
