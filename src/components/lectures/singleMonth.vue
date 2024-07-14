@@ -50,12 +50,13 @@
                         </div>
                       </div>
                       </router-link>
-                      <div v-if="session.is_paid==false" class="d-flex flex-column">
+                      <div v-if="session.is_paid==false" class="d-flex flex-column justify-content-center align-items-center">
                         <span class="lesson-price mx-4 mb-2">
                           {{ session.price }} جنية
                         </span>
                         <button
                           class="main_btn lesson_btn"
+                          style="width:200px"
                           @click.stop="payCourse(session.id)"
                         >
                           اشترك الان
@@ -337,7 +338,7 @@ export default {
     },
     async getSessions() {
       await axios
-        .get(`sessions`, {
+        .get(`sessions?course_id=${this.$route.params.id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

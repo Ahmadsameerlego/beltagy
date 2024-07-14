@@ -1,22 +1,28 @@
 <template>
   <div class="mt-5">
     <div class="container">
-      <h5 class="fw-bold text-center">محاضرات الموقع</h5>
+      <h5 class="fw-bold text-center">المسابقات</h5>
       <p class="text-center fw-bold fs-19 mt-3">
-        يمكنك الاطلاع على جميع محاضرات الشهور من هنا
+        يمكنك الاطلاع على جميع المسابقات من هنا
       </p>
+
+
        <Message severity="info" v-if="!needApprove==false">
             <span style="color:#fff">
               هذا الحساب معلق حاليا برجاء التواصل مع الادارة
             </span>
           </Message>
+
+
       <section class="lectures mt-5" v-else>
+
+        <h5 class="fw-bold mb-3">
+          ترتيبك : {{ your_order }}
+        </h5>
         <div class="row" v-if="courses.length > 0">
            <div class="col-md-4 mb-3" v-for="course in courses" :key="course.id">
             <div class="singel-lecture">
-              <div class="lec-image">
-                <img :src="course.image" alt="" />
-              </div>
+             
               <div class="details px-3 pt-3 pb-3">
                 <!-- top section  -->
                 <div class="d-flex justify-content-between align-items-center">
@@ -24,17 +30,24 @@
                     {{  course.name  }}
                   </h6>
 
-                  <div class="flex_column">
+                  <div class="flex_column" v-if="course.student_points.quiz_state=='pending'">
                     <div class="mb-2">
-                      <router-link :to="'/month/'+course.id" class="border-btn d-block">
-                        الدخول للكورس</router-link
+                      <router-link :to="'/questions/'+course.id" class="border-btn d-block">
+                        الدخول للمسابقة</router-link
                       >
                     </div>
-                    <div>
-                      <button @click="payCourse(course.id)" class="main_btn d-block px-4">
-                        اشترك الان</button
-                      >
+                  
+                  </div>
+                  <div class="flex_column" v-if="course.student_points.quiz_state=='finished'">
+                    <div class="mb-2">
+                     <p class="mb-3 fw-bold">
+                      ترتيبك : {{  course.student_points.student_order  }}
+                     </p>
+                     <p class="fw-bold">
+                      درجتك : {{  course.student_points.student_degree  }}
+                     </p>
                     </div>
+                  
                   </div>
                 </div>
                 <!-- detail  -->
@@ -44,11 +57,19 @@
 
                 <!-- price section  -->
                 <div
-                  class="price-section d-flex justify-content-center align-items-center mt-3"
+                  class="price-section d-flex justify-content-between align-items-center mt-3"
                 >
-                  <div class="price-container pt-2 pb-2 px-2">
-                    <span class="price-num"> {{ course.price }} </span>
-                    <span class="mx-3">جنيها</span>
+                  <div class="price-container pt-2 pb-2 px-1">
+                    <span class="price-num"> {{ course.num_questions }} </span>
+                    <span class="mx-1">عدد الاسئلة</span>
+                  </div>
+                  <div class="price-container pt-2 pb-2 px-1">
+                    <span class="price-num"> {{ course.period }} </span>
+                    <span class="mx-1">المدة</span>
+                  </div>
+                  <div class="price-container pt-2 pb-2 px-1">
+                    <span class="price-num"> {{ course.final_degree }} </span>
+                    <span class="mx-1">الدرجة </span>
                   </div>
                 </div>
               </div>
@@ -57,7 +78,7 @@
         </div>
          <Message v-else severity="error">
             <span style="color:#fff">
-              برجاء تسجيل الدخول لمشاهدة الكورسات
+              برجاء تسجيل الدخول لمشاهدة المسابقات
             </span>
           </Message>
       </section>
@@ -81,6 +102,7 @@ export default {
   data() {
     return {
       courses: [],
+      your_order : '',
       url: '',
       visible: false,
             needApprove  : false
@@ -93,14 +115,15 @@ export default {
 
   methods: {
     async getCourses() { 
-      await axios.get('courses', {
+      await axios.get('quizzes', {
         headers: {
           Authorization :  `Bearer ${localStorage.getItem('token')}` ,
         }
       })
         .then((res) => {
           if (res.data.key === 'success') {
-            this.courses = res.data.data.results;
+            this.courses = res.data.data.quizzes.results;
+            this.your_order = res.data.data.user.your_order;
           } else if (res.data.key === 'needApprove') {
             this.needApprove = true;
           }
@@ -132,7 +155,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .border-btn {
   border: 1px solid #15364d;
   border-radius: 5px;
@@ -175,7 +198,6 @@ export default {
     margin: auto;
     box-shadow: 0px 0px 10px #32323254;
     border-radius: 10px;
-    margin-top: -80px;
     background-color: #fff;
     z-index: 1;
     position: relative;

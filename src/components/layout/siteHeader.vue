@@ -25,13 +25,13 @@
               >
             </li>
 
-            <!-- <li class="nav-item">
-              <router-link class="nav-link fw-bold" to="/topStudents">
-                الاوائل
-              </router-link>
-            </li> -->
-
             <li class="nav-item">
+              <router-link class="nav-link fw-bold" to="/quizes">
+                المسابقات
+              </router-link>
+            </li>
+
+            <li class="nav-item nav-contact">
               <router-link class="nav-link fw-bold" to="/contact">
                 الشكاوي والمقترحات
               </router-link>

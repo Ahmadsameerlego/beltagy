@@ -278,6 +278,10 @@ $main-color2: #6D98DB   ;
         width: 100% !important;
     }
     #header .navbar a{font-size: 14px !important;}
+
+    .nav-contact{
+        display: none !important;
+    }
 }
 .p-message-wrapper{
     justify-content: space-between;

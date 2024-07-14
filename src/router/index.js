@@ -14,11 +14,20 @@ import quiz from "../views/quizView.vue";
 import notification from '../views/notificationsView.vue'
 import details from '../views/sessionDetails.vue'
 import privacy from '../views/privacyPolicy.vue'
+import quizes from "../views/quizesView.vue";
+import questions from "../views/quizQuestions.vue"
 const routes = [
   {
+    path: "/questions/:id",
+    component: questions,
+  },
+  {
+    path: "/quizes",
+    component: quizes,
+  },
+  {
     path: "/privacy",
-    component: privacy, 
-    
+    component: privacy,
   },
   {
     path: "/details/:id",

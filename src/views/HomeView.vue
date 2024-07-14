@@ -3,9 +3,10 @@
   <siteHeaderVue />
   <homeIntroVue  />
 
-  <topStudentComponent  />
 
   <bestCoursesVue />
+    <topStudentComponent  />
+
   <!-- <aboutOwnerVue /> -->
   <!-- about  -->
   <!-- <homeAboutVue /> -->

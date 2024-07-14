@@ -253,10 +253,29 @@ export default {
             this.quiz.questions = res.data.data.questions;
           }
       } )
-    }
+    },
+    // get questions 
+    async getquizQuestions() {
+      await axios.get(`quiz-details/${this.$route.params.id}`, {
+        headers: {
+          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
+        }
+      })
+        .then((res) => {
+                      this.key = res.data.key;
+
+          if (res.data.key === 'success') {
+            this.quiz.questions = res.data.data.questions;
+          }
+      } )
+    },
   },
   mounted() {
-    this.getQuestions();
+    if (this.$route.fullPath.includes('questions')) {
+      this.getquizQuestions();
+    } else {
+      this.getQuestions();
+    }
   },
   components: {
     Message
