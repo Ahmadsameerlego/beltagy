@@ -70,7 +70,7 @@ import Toast from 'primevue/toast';
 
        if (this.$route.fullPath.includes('api/payment-response?')) {
       const currentUrl = window.location.href;
-      const newUrl = currentUrl.replace('https://beltagy.vercel.app', 'https://api.3moelbeltagy.com');
+      const newUrl = currentUrl.replace('https://3moelbeltagy.com', 'https://api.3moelbeltagy.com');
       window.location.replace(newUrl);
     }
 
