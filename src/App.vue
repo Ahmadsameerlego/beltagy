@@ -66,7 +66,13 @@ import Toast from 'primevue/toast';
       },
      mounted(){ 
       
-    this.requestPermission(); 
+       this.requestPermission(); 
+
+       if (this.$route.fullPath.includes('api/payment-response?')) {
+      const currentUrl = window.location.href;
+      const newUrl = currentUrl.replace('https://3moelbeltagy.com', 'https://api.3moelbeltagy.com');
+      window.location.replace(newUrl);
+    }
 
     },
     // created(){
