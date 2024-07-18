@@ -65,14 +65,14 @@
     </div>
   </div>
 
-  <Dialog v-model:visible="visible"  :style="{ width: '50rem' }" style="z-index:99999">
+  <!-- <Dialog v-model:visible="visible"  :style="{ width: '50rem' }" style="z-index:99999">
        <iframe :src="url" class="w-100" height="600" frameborder="0" allowfullscreen></iframe>
-</Dialog>
+</Dialog> -->
 </template>
 
 <script>
 import axios from 'axios';
-import Dialog from 'primevue/dialog';
+// import Dialog from 'primevue/dialog';
 import Message from 'primevue/message';
 
 export default {
@@ -93,40 +93,48 @@ export default {
 
   methods: {
     async getCourses() { 
-      await axios.get('courses', {
-        headers: {
-          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
-        }
-      })
-        .then((res) => {
-          if (res.data.key === 'success') {
-            this.courses = res.data.data.results;
-          } else if (res.data.key === 'needApprove') {
-            this.needApprove = true;
-          }
-      } )
-    },
+  const token = localStorage.getItem('token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+  try {
+    const res = await axios.get('courses', { headers });
+
+    if (res.data.key === 'success') {
+      this.courses = res.data.data.results;
+    } else if (res.data.key === 'needApprove') {
+      this.isActived = true;
+    }
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+  }
+},
+
 
     // pay course 
     async payCourse(id) {
-      const fd = new FormData();
-      await axios.post(`pay-course/${id}`, fd ,{
-        headers: {
-          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
-        }
-      })
-        .then((res) => {
-          if (res.data.key === 'success') {
-            this.visible = true;
-            setTimeout(() => {
-              this.url = res.data.data.url;
-            }, 1000);
-          } 
-      } )
+  const fd = new FormData();
+  await axios.post(`pay-course/${id}`, fd, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     }
+  })
+  .then((res) => {
+    if (res.data.key === 'success') {
+      this.visible = true;
+      setTimeout(() => {
+        this.url = res.data.data.url;
+        window.open(this.url, '_blank'); // Opens the URL in a new tab
+      }, 1000);
+    } 
+  })
+  .catch((error) => {
+    console.error("Error paying for the course:", error);
+  });
+    }
+
   },
   components: {
-    Dialog,
+    // Dialog,
     Message
   }
 };

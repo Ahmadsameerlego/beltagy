@@ -50,7 +50,7 @@
                         </div>
                       </div>
                       </router-link>
-                      <div v-if="session.is_paid==false" class="d-flex flex-column justify-content-center align-items-center">
+                      <div v-if="session.is_paid==false||course.is_paid==false" class="d-flex flex-column justify-content-center align-items-center">
                         <span class="lesson-price mx-4 mb-2">
                           {{ session.price }} جنية
                         </span>

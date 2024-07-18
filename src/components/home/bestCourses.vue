@@ -2,7 +2,7 @@
   <div class="mt-5">
     <div class="container">
       <h5 class="site_title fw-bold text-center" style="color:#fff">كورسات الموقع</h5>
-      <section v-if="isAuthed">
+      <section >
               <div v-if="isActived == false">
         <section class="lectures mt-5">
         <div class="row">
@@ -18,15 +18,15 @@
                     {{  course.name  }}
                   </h6>
 
-                  <div class="flex_column">
+                 <div class="flex_column">
                     <div class="mb-2">
-                      <router-link to="/month/1" class="border-btn d-block">
+                      <router-link :to="'/month/'+course.id" class="border-btn d-block">
                         الدخول للكورس</router-link
                       >
                     </div>
                     <div>
-                      <router-link :to="'/month/'+course.id" class="main_btn d-block px-4">
-                        اشترك الان</router-link
+                      <button @click="payCourse(course.id)" class="main_btn d-block px-4">
+                        اشترك الان</button
                       >
                     </div>
                   </div>
@@ -67,14 +67,7 @@
 
       </div>
       </section>
-      <div v-else>
-          <Message severity="error">
-            <span style="color:#fff">
-              برجاء تسجيل الدخول لمشاهدة الكورسات
-            </span>
-          </Message>
-
-      </div>
+    
 
     </div>
   </div>
@@ -96,29 +89,53 @@ export default {
   },
 
   mounted() {
-    if (localStorage.getItem('token')) {
+    // if (localStorage.getItem('token')) {
       this.getCourses();
-      this.isAuthed = true;
-    } else {
-      this.isAuthed = false;
-    }
+    //   this.isAuthed = true;
+    // } else {
+    //   this.isAuthed = false;
+    // }
   },
 
   methods: {
     async getCourses() { 
-      await axios.get('courses', {
-        headers: {
-          Authorization :  `Bearer ${localStorage.getItem('token')}` ,
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      try {
+        const res = await axios.get('courses', { headers });
+
+        if (res.data.key === 'success') {
+          this.courses = res.data.data.results;
+        } else if (res.data.key === 'needApprove') {
+          this.isActived = true;
         }
-      })
-        .then((res) => {
-          if (res.data.key === 'success') {
-            this.courses = res.data.data.results;
-          } else if (res.data.key === 'needApprove') {
-            this.isActived = true;
-          }
-      } )
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
+    },
+      // pay course 
+    async payCourse(id) {
+  const fd = new FormData();
+  await axios.post(`pay-course/${id}`, fd, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     }
+  })
+  .then((res) => {
+    if (res.data.key === 'success') {
+      this.visible = true;
+      setTimeout(() => {
+        this.url = res.data.data.url;
+        window.open(this.url, '_blank'); // Opens the URL in a new tab
+      }, 1000);
+    } 
+  })
+  .catch((error) => {
+    console.error("Error paying for the course:", error);
+  });
+    }
+
   },
   components: {
     Message

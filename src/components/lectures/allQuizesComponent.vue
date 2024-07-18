@@ -16,7 +16,7 @@
 
       <section class="lectures mt-5" v-else>
 
-        <h5 class="fw-bold mb-3">
+        <h5 class="fw-bold mb-3"  v-if="courses.length > 0">
           ترتيبك : {{ your_order }}
         </h5>
         <div class="row" v-if="courses.length > 0">
