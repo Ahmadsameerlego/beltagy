@@ -24,7 +24,7 @@
                         الدخول للكورس</router-link
                       >
                     </div>
-                    <div>
+                    <div v-if="course.is_paid==false">
                       <button @click="payCourse(course.id)" class="main_btn d-block px-4">
                         اشترك الان</button
                       >

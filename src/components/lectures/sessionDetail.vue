@@ -1,6 +1,6 @@
 <template>
   <div class="all-lectures mt-5 mb-5">
-    <div v-if="course.is_paid==false" class="w-50 mx-auto d-flex justify-content-center">
+    <div v-if="is_course_paid==false" class="w-50 mx-auto d-flex justify-content-center">
        <Message severity="warn">
                 يرجى شراء الكورس لمشاهدة المزيد من التفاصيل
             </Message>
@@ -35,23 +35,23 @@
             <div class="">
               <section>
                 <!-- شيت  -->
-                <div class="single-detail" :class="{notAvilable : course.is_paid==false}">
+                <div class="single-detail" :class="{notAvilable : is_course_paid==false}">
                      <router-link :to="'/quiz/'+course.id" class="d-flex justify-content-between" style="color:#fff" @click="storeType('sheet')"> 
                     <span class="d-flex align-items-center gap-2 w-full">
-                                            <i class="fa-solid fa-file-pen session-icon"></i>
+                      <i class="fa-solid fa-file-pen session-icon"></i>
 
                       <span class="lesson-name  mx-3"> شيت على اللي فات </span>
                      
                     </span>
 
-                     <span class="lesson-finished mx-3" v-if="course.is_paid==true">
+                     <span class="lesson-finished mx-3" v-if="is_course_paid==true&&(sheet.user_result == parseInt(sheet.sheet_success_degree))">
                         <i class="fa-solid fa-circle-check"></i>
                       </span>
-                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="course.is_paid==false">
+                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="is_course_paid==false">
                         <i class="fa-solid fa-lock" ></i>
                       </span>
                        <span style="color:#67D475;font-size:20px" >
-                        <i class="fa-solid fa-lock-open" v-if="course.is_paid==true"></i>
+                        <i class="fa-solid fa-lock-open" v-if="is_course_paid==true"></i>
                       </span>
                     </router-link>
 
@@ -60,7 +60,7 @@
                   </div> -->
                 </div>
                 <!-- فيديو  -->
-                <div class="single-detail d-flex align-items-center justify-content-between" :class="{notAvilable : course.is_paid==false}">
+                <div class="single-detail d-flex align-items-center justify-content-between" :class="{notAvilable : is_course_paid==false}">
                   <!-- <template #header> -->
                     <div class="d-flex sessionConent " style="cursor:pointer" @click="showVideo(course.video1.url, 1)">
                                         <i class="fa-solid fa-video session-icon mx-3"></i>
@@ -71,7 +71,7 @@
                       </div>
                      <div >
                       
-                     <div v-if="course.is_paid==true">
+                     <div v-if="is_course_paid==true">
                        <div
                       v-if="course.stop_session==true"
                         style="margin-right: 50px"
@@ -101,14 +101,14 @@
                      </div>
                     </div>
 
-                    <span class="lesson-finished mx-3" v-if="(course.is_paid==true&&video1.watched==true) || videoWatched1">
+                    <span class="lesson-finished mx-3" v-if="(is_course_paid==true&&video1.watched==true) || videoWatched1">
                         <i class="fa-solid fa-circle-check"></i>
                       </span>
-                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="course.is_paid==false">
+                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="is_course_paid==false">
                         <i class="fa-solid fa-lock" ></i>
                       </span>
                        <span style="color:#67D475;font-size:20px" >
-                        <i class="fa-solid fa-lock-open" v-if="course.is_paid==true"></i>
+                        <i class="fa-solid fa-lock-open" v-if="is_course_paid==true"></i>
                       </span>
                   <!-- </template> -->
                   <!-- <div class="go-quiz">
@@ -118,7 +118,7 @@
                   </div> -->
                 </div>
                 <!-- quiz  -->
-                <div class="single-detail" :class="{notAvilable : course.is_paid==false}">
+                <div class="single-detail" :class="{notAvilable : is_course_paid==false}">
                      <router-link :to="'/quiz/'+course.id" class="d-flex justify-content-between" style="color:#fff" @click="storeType('quiz')"> 
                     <span class="d-flex align-items-center gap-2 w-full">
                                             <i class="fa-solid fa-file-pen session-icon"></i>
@@ -127,14 +127,14 @@
                      
                     </span>
 
-                     <span class="lesson-finished mx-3" v-if="course.is_paid==true">
+                     <span class="lesson-finished mx-3" v-if="is_course_paid==true&&(quiz.user_result == parseInt(quiz.quiz_success_degree))">
                         <i class="fa-solid fa-circle-check"></i>
                       </span>
-                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="course.is_paid==false">
+                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="is_course_paid==false">
                         <i class="fa-solid fa-lock" ></i>
                       </span>
                        <span style="color:#67D475;font-size:20px" >
-                        <i class="fa-solid fa-lock-open" v-if="course.is_paid==true"></i>
+                        <i class="fa-solid fa-lock-open" v-if="is_course_paid==true"></i>
                       </span>
                     </router-link>
 
@@ -143,7 +143,7 @@
                   </div> -->
                 </div>
                 <!-- فيديو  -->
-                <div class="single-detail d-flex align-items-center justify-content-between" :class="{notAvilable : course.is_paid==false}">
+                <div class="single-detail d-flex align-items-center justify-content-between" :class="{notAvilable : is_course_paid==false}">
                   <!-- <template #header> -->
                     <div class="d-flex sessionConent " style="cursor:pointer" @click="showVideo(course.video2.url, 2)">
                                         <i class="fa-solid fa-video session-icon mx-3"></i>
@@ -154,7 +154,7 @@
                       </div>
                      <div >
                       
-                     <div v-if="course.is_paid==true">
+                     <div v-if="is_course_paid==true">
                        <div
                       v-if="course.stop_session==true"
                         style="margin-right: 50px"
@@ -184,14 +184,14 @@
                      </div>
                     </div>
 
-                    <span class="lesson-finished mx-3" v-if="(course.is_paid==true&&video2.watched==false)||videoWatched2">
+                    <span class="lesson-finished mx-3" v-if="(is_course_paid==true&&video2.watched==false)||videoWatched2">
                         <i class="fa-solid fa-circle-check"></i>
                       </span>
-                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="course.is_paid==false">
+                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="is_course_paid==false">
                         <i class="fa-solid fa-lock" ></i>
                       </span>
                        <span style="color:#67D475;font-size:20px" >
-                        <i class="fa-solid fa-lock-open" v-if="course.is_paid==true"></i>
+                        <i class="fa-solid fa-lock-open" v-if="is_course_paid==true"></i>
                       </span>
                   <!-- </template> -->
                   <!-- <div class="go-quiz">
@@ -200,7 +200,7 @@
                     </button>
                   </div> -->
                 </div>
-                  <div class="single-detail" :class="{notAvilable : course.is_paid==false}">
+                  <div class="single-detail" :class="{notAvilable : is_course_paid==false}">
                      <router-link :to="'/quiz/'+course.id" class="d-flex justify-content-between" style="color:#fff" @click="storeType('home_work')"> 
                     <span class="d-flex align-items-center gap-2 w-full">
                                             <i class="fa-solid fa-file-pen session-icon"></i>
@@ -209,14 +209,14 @@
                      
                     </span>
 
-                     <span class="lesson-finished mx-3" v-if="course.is_paid==true">
+                     <span class="lesson-finished mx-3" v-if="is_course_paid==true&&(home_work.user_result == parseInt(home_work.home_work_success_degree))">
                         <i class="fa-solid fa-circle-check"></i>
                       </span>
-                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="course.is_paid==false">
+                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="is_course_paid==false">
                         <i class="fa-solid fa-lock" ></i>
                       </span>
                        <span style="color:#67D475;font-size:20px" >
-                        <i class="fa-solid fa-lock-open" v-if="course.is_paid==true"></i>
+                        <i class="fa-solid fa-lock-open" v-if="is_course_paid==true"></i>
                       </span>
                     </router-link>
 
@@ -226,7 +226,7 @@
                 </div>
 
 
-                <div class="single-detail" :class="{notAvilable : course.is_paid==false}">
+                <div class="single-detail" :class="{notAvilable : is_course_paid==false}">
                      <router-link :to="'/quiz/'+course.id" class="d-flex justify-content-between" style="color:#fff" @click="storeType('exam')"> 
                     <span class="d-flex align-items-center gap-2 w-full">
                                             <i class="fa-solid fa-file-pen session-icon"></i>
@@ -235,14 +235,14 @@
                      
                     </span>
 
-                     <span class="lesson-finished mx-3" v-if="course.is_paid==true">
+                     <span class="lesson-finished mx-3" v-if="is_course_paid==true&&(exam.user_result == parseInt(exam.exam_success_degree))">
                         <i class="fa-solid fa-circle-check"></i>
                       </span>
-                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="course.is_paid==false">
+                       <span class="mx-3" style="color:#E0B732;font-size:20px" v-if="is_course_paid==false">
                         <i class="fa-solid fa-lock" ></i>
                       </span>
                        <span style="color:#67D475;font-size:20px" >
-                        <i class="fa-solid fa-lock-open" v-if="course.is_paid==true"></i>
+                        <i class="fa-solid fa-lock-open" v-if="is_course_paid==true"></i>
                       </span>
                     </router-link>
 
@@ -290,25 +290,10 @@ export default {
     return {
       // start quiz
       quiz: {
-        title: "simple quiz",
-        questions: [
-          {
-            text: "What is 2 + 2?",
-            options: ["3", "4", "5", "6"],
-            answer: "4",
-          },
-          {
-            text: "What is the capital of France?",
-            options: ["London", "Berlin", "Paris", "Madrid"],
-            answer: "Paris",
-          },
-          {
-            text: "Which planet is known as the Red Planet?",
-            options: ["Mars", "Venus", "Jupiter", "Mercury"],
-            answer: "Mars",
-          },
-        ],
       },
+      sheet : {},
+      home_work : {},
+      exam : {},
       selectedOptions: [],
       quizCompleted: false,
       isVidoShow: true,
@@ -320,7 +305,8 @@ export default {
             video1 : {},
       video2: {},
       videoWatched1: false,
-            videoWatched2 : false
+      videoWatched2: false,
+            is_course_paid : null
       // end quiz
 
       // start video
@@ -346,6 +332,12 @@ export default {
   mounted() {
     // this.getCourses();
     this.getSessionDetails();
+     setTimeout(() => {
+      let course = localStorage.getItem('course') || {};
+    if (course) {
+      this.is_course_paid = JSON.parse(course).is_paid;
+    }
+    }, 1000);
   },
 
     methods: {
@@ -391,7 +383,11 @@ export default {
         .then((res) => {
           if (res.data.key === 'success') {
             this.course = res.data.data;
-            this.video1 = res.data.data.video1;
+            this.quiz = res.data.data.quiz;
+            this.exam = res.data.data.exam;
+            this.sheet = res.data.data.sheet;
+            this.home_work = res.data.data.home_work;
+            this.home = res.data.data.video1;
             this.video2 = res.data.data.video2;
           }
       } )

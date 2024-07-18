@@ -25,13 +25,13 @@
                   </h6>
 
                   <div class="flex_column">
-                    <div class="mb-2">
+                    <div class="mb-2"  @click="storeCourse(course)">
                       <router-link :to="'/month/'+course.id" class="border-btn d-block">
                         الدخول للكورس</router-link
                       >
                     </div>
-                    <div>
-                      <button @click="payCourse(course.id)" class="main_btn d-block px-4">
+                    <div v-if="course.is_paid==false">
+                      <button  @click="payCourse(course.id)" class="main_btn d-block px-4">
                         اشترك الان</button
                       >
                     </div>
@@ -92,6 +92,9 @@ export default {
   },
 
   methods: {
+    storeCourse(course) {
+      localStorage.setItem('course', JSON.stringify(course))
+    },
     async getCourses() { 
   const token = localStorage.getItem('token');
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
