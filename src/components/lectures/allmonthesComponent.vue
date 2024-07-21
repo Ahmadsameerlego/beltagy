@@ -26,9 +26,9 @@
 
                   <div class="flex_column">
                     <div class="mb-2"  @click="storeCourse(course)">
-                      <router-link :to="'/month/'+course.id" class="border-btn d-block">
-                        الدخول للكورس</router-link
-                      >
+                      <button @click="checkAuth(course.id)" class="border-btn d-block">
+                        الدخول للكورس
+                        </button>
                     </div>
                     <div v-if="course.is_paid==false">
                       <button  @click="payCourse(course.id)" class="main_btn d-block px-4">
@@ -83,12 +83,18 @@ export default {
       courses: [],
       url: '',
       visible: false,
-            needApprove  : false
+      needApprove: false,
+            isLoggedIn : false
     };
   },
 
   mounted() {
     this.getCourses();
+     if( localStorage.getItem('token') ){
+          this.isLoggedIn = true;
+        } else {
+          this.isLoggedIn = false;
+        }
   },
 
   methods: {
@@ -115,7 +121,8 @@ export default {
 
     // pay course 
     async payCourse(id) {
-  const fd = new FormData();
+      if (this.isLoggedIn == true) {
+        const fd = new FormData();
   await axios.post(`pay-course/${id}`, fd, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -133,6 +140,22 @@ export default {
   .catch((error) => {
     console.error("Error paying for the course:", error);
   });
+      } else {
+        this.$router.push('/login')
+                this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
+
+      }
+    },
+
+    checkAuth(id) {
+      if (this.isLoggedIn == true) {
+        this.$router.push(`/month/${id}`)
+      } else {
+        this.$router.push('/login')
+
+        this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
+
+      }
     }
 
   },

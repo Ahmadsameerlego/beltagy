@@ -20,9 +20,9 @@
 
                  <div class="flex_column">
                     <div class="mb-2">
-                      <router-link :to="'/month/'+course.id" class="border-btn d-block">
-                        الدخول للكورس</router-link
-                      >
+                      <button @click="checkAuth(course.id)" class="border-btn d-block">
+                        الدخول للكورس
+                      </button>
                     </div>
                     <div v-if="course.is_paid==false">
                       <button @click="payCourse(course.id)" class="main_btn d-block px-4">
@@ -71,11 +71,14 @@
 
     </div>
   </div>
+  <Toast />
 </template>
 
 <script>
 import axios from 'axios';
 import Message from 'primevue/message';
+import Toast from 'primevue/toast';
+
 
 export default {
   name: "CoursesBestCourses",
@@ -84,7 +87,8 @@ export default {
     return {
       courses: [],
       isActived: false,
-      isAuthed : false
+      isAuthed: false,
+      isLoggedIn : false
     };
   },
 
@@ -95,6 +99,14 @@ export default {
     // } else {
     //   this.isAuthed = false;
     // }
+
+      // window.addEventListener('click', this.closeNavbarOnClickOutside);
+        if( localStorage.getItem('token') ){
+          this.isLoggedIn = true;
+        } else {
+          this.isLoggedIn = false;
+        }
+        
   },
 
   methods: {
@@ -116,29 +128,48 @@ export default {
     },
       // pay course 
     async payCourse(id) {
-  const fd = new FormData();
-  await axios.post(`pay-course/${id}`, fd, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    }
-  })
-  .then((res) => {
-    if (res.data.key === 'success') {
-      this.visible = true;
-      setTimeout(() => {
-        this.url = res.data.data.url;
-        window.open(this.url, '_blank'); // Opens the URL in a new tab
-      }, 1000);
-    } 
-  })
-  .catch((error) => {
-    console.error("Error paying for the course:", error);
-  });
+      if (this.isLoggedIn == true) {
+        const fd = new FormData();
+      await axios.post(`pay-course/${id}`, fd, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      })
+      .then((res) => {
+        if (res.data.key === 'success') {
+          this.visible = true;
+          setTimeout(() => {
+            this.url = res.data.data.url;
+            window.open(this.url, '_blank'); // Opens the URL in a new tab
+          }, 1000);
+        } 
+      })
+      .catch((error) => {
+        console.error("Error paying for the course:", error);
+      });
+      } else {
+        this.$router.push('/login')
+                this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
+
+      }
+      
+    },
+    checkAuth(id) {
+      if (this.isLoggedIn == true) {
+        this.$router.push(`/month/${id}`)
+      } else {
+        this.$router.push('/login')
+
+                            this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
+
+      }
     }
 
   },
+
   components: {
-    Message
+    Message,
+    Toast
   }
 };
 </script>

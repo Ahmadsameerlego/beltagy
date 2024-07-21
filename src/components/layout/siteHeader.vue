@@ -82,7 +82,7 @@
           <!-- profile dropdown  -->
           <div class="dropdown profile br-5" v-if="isLoggedIn">
             <button
-              class="btn dropdown-toggle px-4 br-5 pt-2 pb-2"
+              class="btn dropdown-toggle px-1 br-5 pt-2 pb-2"
               type="button"
               id="dropdownMenuButton1"
               data-bs-toggle="dropdown"
