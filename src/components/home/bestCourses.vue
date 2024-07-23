@@ -25,7 +25,7 @@
                       </button>
                     </div>
                     <div v-if="course.is_paid==false">
-                      <button @click="payCourse(course.id)" class="main_btn d-block px-4">
+                      <button @click="openCopoun(course.id, course.price)" class="main_btn d-block px-4">
                         اشترك الان</button
                       >
                     </div>
@@ -72,12 +72,54 @@
     </div>
   </div>
   <Toast />
+
+
+   <Dialog v-model:visible="copoun" modal :style="{ width: '50vw' }">
+    <h5 class="fw-bold text-center">ادخل كوبون الخصم ان وجد</h5>
+    <!-- <p class="text-center">على الرقم ده هيوصلك رسالة SMS اكتبه</p> -->
+    <!-- <div class="logo">
+      <img :src="require('@/assets/imgs/forget2.svg')" alt="" />
+    </div> -->
+
+    <form
+      ref="loginForm"
+      @submit.prevent="payCourse()"
+      class="flex flex-wrap gap-3 p-fluid"
+    >
+      <!-- otp  -->
+      <div class="position-relative flex-auto">
+        
+        <div>
+          <input type="text" class="form-control" placeholder="ادخل الكوبون ان وجد" v-model="copounCode" @input="check_coupon">
+
+         <div v-if="enter">
+           <div v-if="isRight==true" class="text-danger"> الكوبون غير صحيح </div>
+          <div v-else class="text-success"> الكوبون  صحيح </div>
+         </div>
+        </div>
+      </div>
+      <section >
+           <div class="mt-4">
+            <button
+              class="main_btn pt-3 pb-3 fs-5 w-75 mx-auto flex_center"
+              :disabled="WhatsDisabled"
+            >
+              <span v-if="!spinner">ادفغ الان </span>
+              <div class="spinner-border mx-2" role="status" v-if="spinner">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+      </div>
+      </section>
+    </form>
+  </Dialog>
 </template>
 
 <script>
 import axios from 'axios';
 import Message from 'primevue/message';
 import Toast from 'primevue/toast';
+import Dialog from 'primevue/dialog';
 
 
 export default {
@@ -88,7 +130,15 @@ export default {
       courses: [],
       isActived: false,
       isAuthed: false,
-      isLoggedIn : false
+      isLoggedIn: false,
+            copoun: false,
+      course_id: '',
+      course_price : '',
+      WhatsDisabled: false,
+      copounCode: '',
+      isRight: null,
+            enter : false
+
     };
   },
 
@@ -127,49 +177,74 @@ export default {
       }
     },
       // pay course 
-    async payCourse(id) {
+        // pay course 
+    async payCourse() {
+      this.WhatsDisabled = true;
       if (this.isLoggedIn == true) {
         const fd = new FormData();
-      await axios.post(`pay-course/${id}`, fd, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      })
-      .then((res) => {
-        if (res.data.key === 'success') {
-          this.visible = true;
-          setTimeout(() => {
-            this.url = res.data.data.url;
-            window.open(this.url, '_blank'); // Opens the URL in a new tab
-          }, 1000);
-        } 
-      })
-      .catch((error) => {
-        console.error("Error paying for the course:", error);
-      });
+        fd.append('coupon_num', this.copounCode)
+  await axios.post(`pay-course/${this.course_id}`, fd, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    }
+  })
+  .then((res) => {
+    if (res.data.key === 'success') {
+      this.visible = true;
+      setTimeout(() => {
+        this.url = res.data.data.url;
+        window.open(this.url, '_blank'); // Opens the URL in a new tab
+      }, 1000);
+    } 
+    this.WhatsDisabled = false;
+  })
+  .catch((error) => {
+    console.error("Error paying for the course:", error);
+  });
       } else {
         this.$router.push('/login')
                 this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
 
       }
-      
     },
+
+
+    async check_coupon() {
+      
+      const fd = new FormData();
+      await axios.post(`check-coupon?coupon_num=${this.copounCode}&total_price=${this.course_price}`, fd)
+        .then((res) => {
+          this.enter = true;
+          if (res.data.key == 'fail') {
+            this.isRight = true;
+          } else {
+            this.isRight = false;
+        }
+      } )
+    },
+
     checkAuth(id) {
       if (this.isLoggedIn == true) {
         this.$router.push(`/month/${id}`)
       } else {
         this.$router.push('/login')
 
-                            this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
+        this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
 
       }
+    },
+    openCopoun(id, price) {
+      this.course_id = id;
+      this.course_price = price;
+      this.copoun = true;
     }
 
   },
 
   components: {
     Message,
-    Toast
+    Toast,
+    Dialog
   }
 };
 </script>

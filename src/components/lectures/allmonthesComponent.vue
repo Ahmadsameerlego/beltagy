@@ -31,7 +31,7 @@
                         </button>
                     </div>
                     <div v-if="course.is_paid==false">
-                      <button  @click="payCourse(course.id)" class="main_btn d-block px-4">
+                      <button  @click="openCopoun(course.id, course.price)" class="main_btn d-block px-4">
                         اشترك الان</button
                       >
                     </div>
@@ -65,15 +65,55 @@
     </div>
   </div>
 
-  <!-- <Dialog v-model:visible="visible"  :style="{ width: '50rem' }" style="z-index:99999">
-       <iframe :src="url" class="w-100" height="600" frameborder="0" allowfullscreen></iframe>
-</Dialog> -->
+  <Dialog v-model:visible="copoun" modal :style="{ width: '50vw' }">
+    <h5 class="fw-bold text-center">ادخل كوبون الخصم ان وجد</h5>
+    <!-- <p class="text-center">على الرقم ده هيوصلك رسالة SMS اكتبه</p> -->
+    <!-- <div class="logo">
+      <img :src="require('@/assets/imgs/forget2.svg')" alt="" />
+    </div> -->
+
+    <form
+      ref="loginForm"
+      @submit.prevent="payCourse()"
+      class="flex flex-wrap gap-3 p-fluid"
+    >
+      <!-- otp  -->
+      <div class="position-relative flex-auto">
+        
+        <div>
+          <input type="text" class="form-control" placeholder="ادخل الكوبون ان وجد" v-model="copounCode" @input="check_coupon">
+
+         <div v-if="enter">
+           <div v-if="isRight==true" class="text-danger"> الكوبون غير صحيح </div>
+          <div v-else class="text-success"> الكوبون  صحيح </div>
+         </div>
+        </div>
+      </div>
+      <section >
+           <div class="mt-4">
+            <button
+              class="main_btn pt-3 pb-3 fs-5 w-75 mx-auto flex_center"
+              :disabled="WhatsDisabled"
+            >
+              <span v-if="!spinner">ادفغ الان </span>
+              <div class="spinner-border mx-2" role="status" v-if="spinner">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+      </div>
+      </section>
+    </form>
+  </Dialog>
 </template>
 
 <script>
 import axios from 'axios';
 // import Dialog from 'primevue/dialog';
 import Message from 'primevue/message';
+
+
+import Dialog from 'primevue/dialog';
+
 
 export default {
   name: "CoursesBestCourses",
@@ -84,7 +124,14 @@ export default {
       url: '',
       visible: false,
       needApprove: false,
-            isLoggedIn : false
+      isLoggedIn: false,
+      copoun: false,
+      course_id: '',
+      course_price : '',
+      WhatsDisabled: false,
+      copounCode: '',
+      isRight: null,
+            enter : false
     };
   },
 
@@ -120,10 +167,12 @@ export default {
 
 
     // pay course 
-    async payCourse(id) {
+    async payCourse() {
+      this.WhatsDisabled = true;
       if (this.isLoggedIn == true) {
         const fd = new FormData();
-  await axios.post(`pay-course/${id}`, fd, {
+        fd.append('coupon_num', this.copounCode)
+  await axios.post(`pay-course/${this.course_id}`, fd, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     }
@@ -136,6 +185,7 @@ export default {
         window.open(this.url, '_blank'); // Opens the URL in a new tab
       }, 1000);
     } 
+    this.WhatsDisabled = false;
   })
   .catch((error) => {
     console.error("Error paying for the course:", error);
@@ -147,6 +197,21 @@ export default {
       }
     },
 
+
+    async check_coupon() {
+      
+      const fd = new FormData();
+      await axios.post(`check-coupon?coupon_num=${this.copounCode}&total_price=${this.course_price}`, fd)
+        .then((res) => {
+          this.enter = true;
+          if (res.data.key == 'fail') {
+            this.isRight = true;
+          } else {
+            this.isRight = false;
+        }
+      } )
+    },
+
     checkAuth(id) {
       if (this.isLoggedIn == true) {
         this.$router.push(`/month/${id}`)
@@ -156,12 +221,18 @@ export default {
         this.$toast.add({ severity: 'info', summary: 'يجب تسجيل الدخول اولا', life: 3000 });
 
       }
+    },
+    openCopoun(id, price) {
+      this.course_id = id;
+      this.course_price = price;
+      this.copoun = true;
     }
 
   },
   components: {
     // Dialog,
-    Message
+    Message,
+    Dialog
   }
 };
 </script>
