@@ -95,7 +95,7 @@
               class="main_btn pt-3 pb-3 fs-5 w-75 mx-auto flex_center"
               :disabled="WhatsDisabled"
             >
-              <span v-if="!spinner">ادفغ الان </span>
+              <span v-if="!spinner">ادفع الان </span>
               <div class="spinner-border mx-2" role="status" v-if="spinner">
                 <span class="visually-hidden">Loading...</span>
               </div>

@@ -121,9 +121,13 @@ export default {
     async sendOtp() {
       this.disabled = true;
       this.spinner = true;
-
+      const fd = new FormData()
       try {
-        await axios.patch(`set-parent-phone?id=15&parent_phone=${this.phone}`).then((res) => {
+        await axios.patch(`set-parent-phone?id=15&parent_phone=${this.phone}`, fd ,{
+           headers: {
+          Authorization : `Bearer ${localStorage.getItem('token')}`
+        }
+        }).then((res) => {
           if (res.data.key == "success") {
             this.$toast.add({
               severity: "success",
