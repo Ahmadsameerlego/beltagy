@@ -73,7 +73,7 @@
                       
                      <div v-if="is_course_paid==true">
                        <div
-                      v-if="course.stop_session==true"
+                      v-if="course.num_available_days==0"
                         style="margin-right: 50px"
                         class=" d-flex align-items-center"
                       >
@@ -156,7 +156,7 @@
                       
                      <div v-if="is_course_paid==true">
                        <div
-                      v-if="course.stop_session==true"
+                      v-if="course.num_available_days==0"
                         style="margin-right: 50px"
                         class=" d-flex align-items-center"
                       >

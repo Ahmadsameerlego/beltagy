@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5 mb-5">
-   <section v-if="key!=='fail'">
+   <section v-if="quiz.questions.length>0">
      <div v-if="!quizCompleted">
       <h3 class="mainColor text-center mb-4 fw-bold">{{ quiz.title }}</h3>
 
