@@ -60,12 +60,17 @@ import Toast from 'primevue/toast';
 
         }
       },
+      disableRightClick(event) {
+      event.preventDefault();
+    }
+
       },
       components:{
         Toast
       },
      mounted(){ 
-      
+      document.addEventListener('contextmenu', this.disableRightClick);
+
        this.requestPermission(); 
 
        if (this.$route.fullPath.includes('api/payment-response?')) {
@@ -75,6 +80,10 @@ import Toast from 'primevue/toast';
     }
 
     },
+    beforeUnmount() {
+    // Clean up event listener
+    document.removeEventListener('contextmenu', this.disableRightClick);
+  },
     // created(){
     //   localStorage.clear();
     // }

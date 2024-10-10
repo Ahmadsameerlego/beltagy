@@ -173,6 +173,7 @@ a {
 .flex-socials img {
   width: 24px;
   height: 24px;
+  mix-blend-mode: multiply
 }
 .sm-img {
   width: 40px;

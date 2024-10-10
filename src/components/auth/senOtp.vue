@@ -169,6 +169,7 @@ export default {
               localStorage.setItem('token', res.data.data.user.token)
             setTimeout(() => {
               this.parentPhone = true;
+              this.otp = false ;
             }, 2000);
             // // check if the function for the active code or check forget password code
             // if (localStorage.getItem("otpType") == "active") {

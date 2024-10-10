@@ -84,7 +84,8 @@ export default {
       resendTime: false,
       methodName: "",
         otpType: "",
-      phone : ''
+      phone : '',
+      user_id : ''
     };
   },
   components: {
@@ -123,7 +124,7 @@ export default {
       this.spinner = true;
       const fd = new FormData()
       try {
-        await axios.patch(`set-parent-phone?id=15&parent_phone=${this.phone}`, fd ,{
+        await axios.patch(`set-parent-phone?id=${this.user_id}&parent_phone=${this.phone}`, fd ,{
            headers: {
           Authorization : `Bearer ${localStorage.getItem('token')}`
         }
@@ -195,6 +196,10 @@ export default {
     // .then(response => response.json())
     // .then(data => localStorage.setItem('device_id', data.ip))
     // .catch(error => console.error(error));
+
+    if(localStorage.getItem('user')){
+      this.user_id = JSON.parse(localStorage.getItem('user')).id
+    }
   },
 };
 </script>

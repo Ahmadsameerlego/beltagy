@@ -241,7 +241,7 @@ export default {
 
     // get questions 
     async getQuestions() {
-      await axios.get(`session-questions?session_id=${this.$route.params.id}`, {
+      await axios.get(`session-questions?session_id=${this.$route.params.id}&type=sheet`, {
         headers: {
           Authorization :  `Bearer ${localStorage.getItem('token')}` ,
         }

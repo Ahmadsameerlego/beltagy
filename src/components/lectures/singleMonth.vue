@@ -4,15 +4,16 @@
     <div class="container">
       <div v-if="!isVidoShow" class="mb-5">
         <div class="video-conatiner w-100">
-          <iframe
+          <!-- <iframe
             :src="embeddedVideoSrc"
             height="300"
             class="w-100"
             frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
+            controls=0
+            style="    user-select: none;"
           >
-          </iframe>
+          </iframe> -->
         </div>
       </div>
 

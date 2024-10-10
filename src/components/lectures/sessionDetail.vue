@@ -11,12 +11,13 @@
       <div v-if="!isVidoShow" class="mb-5">
         <div class="video-conatiner w-100">
          <iframe
-          :src="embeddedVideoSrc"
+          :src="'https://www.youtube.com/embed/'+embeddedVideoSrc+'?autoplay=1&mute=0&controls=0&modestbranding=0&rel=0&showinfo=0'"
           height="300"
           class="w-100"
           frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
+          allowfullscreen
+          style="user-select:none"
+          >
         </iframe>
         </div>
       </div>
@@ -299,7 +300,7 @@ export default {
       isVidoShow: true,
       course: {},
       courses: [],
-      videoSrc: '',
+      videoSrc: 'https://www.youtube.com/embed/aNia1RSkENE',
         url: '',
             visible : false,
             video1 : {},
@@ -324,8 +325,7 @@ export default {
       return correct;
     },
     embeddedVideoSrc() {
-      const videoId = this.videoSrc.split('youtu.be/')[1].split('?')[0];
-      return `https://www.youtube.com/embed/${videoId}`;
+      return this.videoSrc
     }
   },
 
@@ -627,5 +627,7 @@ export default {
 .options {
   margin-top: 10px;
 }
-
+.ytp-title-enable-channel-logo .ytp-title{
+  display: none !important;
+}
 </style>

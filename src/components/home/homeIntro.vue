@@ -7,7 +7,7 @@
           <div class="job_image">
             <div>
               <img
-                :src="require('@/assets/imgs/intro.jpeg')"
+                :src="require('@/assets/imgs/panar.png')"
                 alt=""
                 style="
                   width:100%;
